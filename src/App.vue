@@ -1,28 +1,73 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <button @click="handleTrackSession">trackSession</button>
+    <button @click="handleLogin">Login</button>
+    <button @click="handleLogout">Logout</button>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import AuthingSSO from "./lib/index";
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  name: "app",
+  mounted() {
+    // oidc
+    // this.auth = new AuthingSSO({
+    //   appId: "5ceb6fecf218f50689b72c1c",
+    //   appType: "oidc",
+    //   appDomain: "oidc1.localtest.com",
+    //   nonce: 113,
+    //   timestamp: Date.now(),
+    //   dev: true
+    // });
+    // oauth
+    // this.auth = new AuthingSSO({
+    //   appId: "5cbd7387469e95f84e3434f7",
+    //   appType: "oauth",
+    //   appDomain: "oauth1.localtest.com",
+    //   nonce: 113,
+    //   timestamp: Date.now(),
+    //   dev: true
+    // });
+    // saml sp
+    this.auth = new AuthingSSO({
+      appId: "5cefc1148e241e66339fd601",
+      appType: "saml",
+      appDomain: "sp1.localtest.com",
+      nonce: 113,
+      timestamp: Date.now(),
+      dev: true
+    });
+    // saml idp
+    // this.auth = new AuthingSSO({
+    //   appId: "5cefc0408e241ed5759fd600",
+    //   appType: "saml",
+    //   appDomain: "idp1.localtest.com",
+    //   nonce: 113,
+    //   timestamp: Date.now(),
+    //   dev: true
+    // });
+    console.log(this.auth)
+  },
+  methods: {
+    async handleTrackSession() {
+      // let res = await this.auth.login()
+      let res = await this.auth.trackSession()
+      alert(JSON.stringify(res))
+      console.log(res)
+    },
+    async handleLogin() {
+      this.auth.login()
+    },
+    async handleLogout() {
+      let res = await this.auth.logout()
+      alert(JSON.stringify(res))
+      console.log(res)
+    }
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
