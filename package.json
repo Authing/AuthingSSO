@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-pack": "vue-cli-service build --target lib --name SSO ./src/lib/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
