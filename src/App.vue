@@ -21,23 +21,23 @@ export default {
     //   dev: true
     // });
     // oauth
-    // this.auth = new AuthingSSO({
-    //   appId: "5cbd7387469e95f84e3434f7",
-    //   appType: "oauth",
-    //   appDomain: "oauth1.localtest.com",
-    //   nonce: 113,
-    //   timestamp: Date.now(),
-    //   dev: true
-    // });
-    // saml sp
     this.auth = new AuthingSSO({
-      appId: "5cefc1148e241e66339fd601",
-      appType: "saml",
-      appDomain: "sp1.localtest.com",
+      appId: "5cbd7387469e95f84e3434f7",
+      appType: "oauth",
+      appDomain: "oauth1.localtest.com",
       nonce: 113,
       timestamp: Date.now(),
       dev: true
     });
+    // saml sp
+    // this.auth = new AuthingSSO({
+    //   appId: "5cefc1148e241e66339fd601",
+    //   appType: "saml",
+    //   appDomain: "sp1.localtest.com",
+    //   nonce: 113,
+    //   timestamp: Date.now(),
+    //   dev: true
+    // });
     // saml idp
     // this.auth = new AuthingSSO({
     //   appId: "5cefc0408e241ed5759fd600",
