@@ -28,8 +28,9 @@ import SSO from "@authing/sso";
 
 ## 开始使用
 
-### 发起登录
+需要先注册一个 [Authing](https://authing.cn/login) 账号，并[创建一个 OIDC 应用](https://docs.authing.cn/authing/advanced/oidc/create-oidc)。
 
+### 发起登录
 ```js
 import SSO from "@authing/sso";
 
