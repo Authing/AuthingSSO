@@ -31,6 +31,7 @@ import SSO from "@authing/sso";
 需要先注册一个 [Authing](https://authing.cn/login) 账号，并[创建一个 OIDC 应用](https://docs.authing.cn/authing/advanced/oidc/create-oidc)。
 
 ### 发起登录
+
 ```js
 import SSO from "@authing/sso";
 
@@ -74,6 +75,7 @@ let res = await auth.logout();
 ### SSO.prototype.constructor
 
 构造函数，接受一个对象作为参数。对象中的参数列表如下：
+
 | 参数名 | 是否必填 | 描述 | 默认 |
 | ----- | ------- | ---- | -- |
 | appId | 是 | SSO 应用的 ID | - |

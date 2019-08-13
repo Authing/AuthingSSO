@@ -44,7 +44,7 @@ class AuthingSSO {
   // 根据 SSO 应用的类型和 id 查询相关信息，主要用于生成授权链接
   async _queryAppInfo() {
     let OAuthClient = new GraphQLClient({
-      baseURL: "http://localhost:5556/graphql"
+      baseURL: this.graphQLURL
     });
     let mappings = {
       oauth: queryOAuthAppInfoByAppID.bind(this, { appId: this.options.appId }),
