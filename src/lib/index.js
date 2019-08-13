@@ -62,7 +62,9 @@ class AuthingSSO {
     if (this.options.appType in mappings) {
       appInfo = await OAuthClient.request(
         mappings[this.options.appType]()
-      ).then(res => {alert(JSON.stringify(res));return res[mappings2[this.options.appType]]});
+      ).then(res => {
+        return res[mappings2[this.options.appType]];
+      });
     } else {
       throw Error("appType 类型错误，可选参数为 oauth oidc saml");
     }
@@ -100,7 +102,7 @@ class AuthingSSO {
   }
   async logout() {
     let res = await axios.get(this.logoutURL, {
-      withCredentials: true,
+      withCredentials: true
       // headers: {
       //   appId: this.options.clientId,
       //   appDomain: this.options.appDomain
