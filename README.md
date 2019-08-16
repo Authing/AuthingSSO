@@ -13,16 +13,16 @@ $ npm install @authing/sso --save
 接着可以通过以下方式使用
 
 ```js
-import SSO from "@authing/sso";
+import AuthingSSO from "@authing/sso";
 ```
 
 ### 通过 CDN 安装
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@authing/sso/dist/SSO.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@authing/sso/dist/AuthingSSO.umd.min.js"></script>
 
 <script>
-  console.log(SSO);
+  console.log(AuthingSSO);
 </script>
 ```
 
@@ -33,9 +33,9 @@ import SSO from "@authing/sso";
 ### 发起登录
 
 ```js
-import SSO from "@authing/sso";
+import AuthingSSO from "@authing/sso";
 
-let auth = new SSO({
+let auth = new AuthingSSO({
   appId: "SSO_APP_ID",
   appType: "oauth/oidc/saml",
   appDomain: "SSO_APP_DOMAIN",
@@ -72,7 +72,7 @@ let res = await auth.logout();
 
 ## API
 
-### SSO.prototype.constructor
+### AuthingSSO.prototype.constructor
 
 构造函数，接受一个对象作为参数。对象中的参数列表如下：
 
@@ -87,7 +87,7 @@ let res = await auth.logout();
 示例
 
 ```js
-let auth = new SSO({
+let auth = new AuthingSSO({
   appId: "SSO_APP_ID",
   appType: "oidc",
   appDomain: "SSO_APP_DOMAIN",
@@ -96,7 +96,7 @@ let auth = new SSO({
 });
 ```
 
-### SSO.prototype.login
+### AuthingSSO.prototype.login
 
 示例
 
@@ -104,7 +104,7 @@ let auth = new SSO({
 auth.login();
 ```
 
-### SSO.prototype.trackSession
+### AuthingSSO.prototype.trackSession
 
 示例
 
@@ -117,7 +117,7 @@ let res = await auth.trackSession();
  * */
 ```
 
-### SSO.prototype.logout
+### AuthingSSO.prototype.logout
 
 示例
 
