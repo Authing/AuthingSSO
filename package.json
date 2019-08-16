@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-pack": "vue-cli-service build --target lib --name AuthngSSO ./src/lib/index.js",
+    "build-pack": "vue-cli-service build --target lib --name AuthingSSO ./src/lib/index.js",
     "lint": "vue-cli-service lint"
   },
   "main": "dist/SSO.umd.min.js",
