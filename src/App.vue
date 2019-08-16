@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <button @click="handleTrackSession">trackSession</button>
     <button @click="handleLogin">Login</button>
+    <button @click="handleTrackSession">trackSession</button>
     <button @click="handleLogout">Logout</button>
   </div>
 </template>
@@ -22,12 +22,11 @@ export default {
     // });
     // oauth
     this.auth = new AuthingSSO({
-      appId: "5cbd7387469e95f84e3434f7",
-      appType: "oauth",
-      appDomain: "oauth1.localtest.com",
+      appId: "5cded9bf4efab36f02fa666a",
+      appType: "oidc",
+      appDomain: "first-oidc-app.authing.cn",
       nonce: 113,
       timestamp: Date.now(),
-      dev: true
     });
     // saml sp
     // this.auth = new AuthingSSO({
