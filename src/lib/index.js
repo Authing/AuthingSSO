@@ -78,6 +78,9 @@ class AuthingSSO {
         throw Error("AuthingSSO 初始化：缺少 " + need[i] + " 参数");
       }
     }
+    if(!/^[0-9a-f]{24}$/.test(this.options.appId)) {
+      throw Error('appId 格式错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId')
+    }
     return true;
   }
   async login() {
