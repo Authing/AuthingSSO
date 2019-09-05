@@ -82,6 +82,7 @@ class AuthingSSO {
   }
   async login() {
     let appInfo = await this._queryAppInfo();
+    if(!appInfo) throw Error('appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId')
     let url = appInfo.loginUrl;
     location.href = url;
     // let leftVal = (screen.width - 500) / 2;
