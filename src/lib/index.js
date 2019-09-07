@@ -40,6 +40,7 @@ class AuthingSSO {
         ? "http://localhost:5556/graphql"
         : "https://oauth.authing.cn/graphql";
     }
+    this.appInfo = this._queryAppInfo()
   }
   // 根据 SSO 应用的类型和 id 查询相关信息，主要用于生成授权链接
   async _queryAppInfo() {
@@ -83,11 +84,13 @@ class AuthingSSO {
     }
     return true;
   }
-  async login() {
-    let appInfo = await this._queryAppInfo();
-    if(!appInfo) throw Error('appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId')
-    let url = appInfo.loginUrl;
-    location.href = url;
+  login() {
+    this.appInfo.then(appInfo => {
+      if(!appInfo) throw Error('appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId')
+      let url = appInfo.loginUrl;
+      location.href = url;
+    })
+    
     // let leftVal = (screen.width - 500) / 2;
     // let topVal = (screen.height - 700) / 2;
     // 打开新窗口进行登录，把信息通过 PostMessage 发送给前端，开发者需要监听 message 事件
