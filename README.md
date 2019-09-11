@@ -130,3 +130,7 @@ let res = await auth.logout();
  * }
  * */
 ```
+
+## Get Help
+
+1. Join us on Gitter: [#authing-chat](https://gitter.im/authing-chat/community)
