@@ -18,7 +18,8 @@ class AuthingSSO {
       nonce: Math.random()
         .toString()
         .slice(2, 8),
-      timestamp: parseInt(Date.now() / 1000)
+      timestamp: parseInt(Date.now() / 1000),
+      appType: 'oidc',
     };
     this.options = { ...this.options, ...options };
     // 开发模式 flag
