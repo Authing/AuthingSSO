@@ -19,7 +19,7 @@ class AuthingSSO {
         .toString()
         .slice(2, 8),
       timestamp: parseInt(Date.now() / 1000),
-      appType: 'oidc',
+      appType: "oidc"
     };
     this.options = { ...this.options, ...options };
     // 开发模式 flag
@@ -41,7 +41,7 @@ class AuthingSSO {
         ? "http://localhost:5556/graphql"
         : "https://oauth.authing.cn/graphql";
     }
-    this.appInfo = this._queryAppInfo()
+    this.appInfo = this._queryAppInfo();
   }
   // 根据 SSO 应用的类型和 id 查询相关信息，主要用于生成授权链接
   async _queryAppInfo() {
@@ -80,18 +80,23 @@ class AuthingSSO {
         throw Error("AuthingSSO 初始化：缺少 " + need[i] + " 参数");
       }
     }
-    if(!/^[0-9a-f]{24}$/.test(this.options.appId)) {
-      throw Error('appId 格式错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId')
+    if (!/^[0-9a-f]{24}$/.test(this.options.appId)) {
+      throw Error(
+        "appId 格式错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId"
+      );
     }
     return true;
   }
   login() {
     this.appInfo.then(appInfo => {
-      if(!appInfo) throw Error('appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId')
+      if (!appInfo)
+        throw Error(
+          "appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId"
+        );
       let url = appInfo.loginUrl;
       location.href = url;
-    })
-    
+    });
+
     // let leftVal = (screen.width - 500) / 2;
     // let topVal = (screen.height - 700) / 2;
     // 打开新窗口进行登录，把信息通过 PostMessage 发送给前端，开发者需要监听 message 事件
@@ -107,6 +112,22 @@ class AuthingSSO {
 
     //   }
     // }, 1000);
+  }
+  // 调用这个方法，会弹出一个 window 里面是 guard 的登录页面
+  windowLogin() {}
+  // authing.cn/#idtoken=123123&access_token=547567
+  getUrlHash() {
+    try {
+      let arr = location.hash.substring(1).split("&");
+      let result = {};
+      arr.forEach(item => {
+        let [key, val] = item.split("=");
+        result[key] = val;
+      });
+      return result;
+    } catch {
+      return { err: "获取失败" };
+    }
   }
   async logout() {
     let res = await axios.get(this.logoutURL, {
