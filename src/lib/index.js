@@ -96,15 +96,25 @@ class AuthingSSO {
       let url = appInfo.loginUrl;
       location.href = url;
     });
-
-    // let leftVal = (screen.width - 500) / 2;
-    // let topVal = (screen.height - 700) / 2;
+  }
+  // 调用这个方法，会弹出一个 window 里面是 guard 的登录页面
+  windowLogin() {
+    let leftVal = (screen.width - 500) / 2;
+    let topVal = (screen.height - 700) / 2;
+    this.appInfo.then(appInfo => {
+      if (!appInfo)
+        throw Error(
+          "appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId"
+        );
+      let url = appInfo.loginUrl;
+      let popup = window.open(
+        url,
+        "_blank",
+        `width=500,height=700,left=${leftVal},top=${topVal}`
+      );
+    });
     // 打开新窗口进行登录，把信息通过 PostMessage 发送给前端，开发者需要监听 message 事件
-    // let popup = window.open(
-    //   url,
-    //   "_blank",
-    //   `width=500,height=700,left=${leftVal},top=${topVal}`
-    // );
+    
     // let timer = setInterval(function() {
     //   // 每秒检查登录窗口是否已经关闭
     //   if (popup.closed) {
@@ -113,8 +123,6 @@ class AuthingSSO {
     //   }
     // }, 1000);
   }
-  // 调用这个方法，会弹出一个 window 里面是 guard 的登录页面
-  windowLogin() {}
   // authing.cn/#idtoken=123123&access_token=547567
   // 返回 {idtoken: 123123, access_token: 547567}
   getUrlHash() {

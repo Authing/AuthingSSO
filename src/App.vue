@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <button @click="handleLogin">Login</button>
+    <button @click="handleWindowLogin">windowLogin</button>
     <button @click="handleTrackSession">trackSession</button>
     <button @click="handleLogout">Logout</button>
   </div>
@@ -57,6 +58,9 @@ export default {
     },
     async handleLogin() {
       this.auth.login()
+    },
+    handleWindowLogin() {
+      this.auth.windowLogin()
     },
     async handleLogout() {
       let res = await this.auth.logout()
