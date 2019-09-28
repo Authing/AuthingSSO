@@ -116,6 +116,7 @@ class AuthingSSO {
   // 调用这个方法，会弹出一个 window 里面是 guard 的登录页面
   windowLogin() {}
   // authing.cn/#idtoken=123123&access_token=547567
+  // 返回 {idtoken: 123123, access_token: 547567}
   getUrlHash() {
     try {
       let arr = location.hash.substring(1).split("&");
