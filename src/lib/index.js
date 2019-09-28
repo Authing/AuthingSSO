@@ -127,13 +127,17 @@ class AuthingSSO {
   // 返回 {idtoken: 123123, access_token: 547567}
   getUrlHash() {
     try {
-      let arr = location.hash.substring(1).split("&");
-      let result = {};
-      arr.forEach(item => {
-        let [key, val] = item.split("=");
-        result[key] = val;
-      });
-      return result;
+      if(location.hash) {
+        let arr = location.hash.substring(1).split("&");
+        let result = {};
+        arr.forEach(item => {
+          let [key, val] = item.split("=");
+          result[key] = val;
+        });
+        return result;
+      } else {
+        return null
+      }
     } catch {
       return { err: "获取失败" };
     }
