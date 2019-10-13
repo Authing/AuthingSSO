@@ -37,10 +37,8 @@ import AuthingSSO from "@authing/sso";
 
 let auth = new AuthingSSO({
   appId: "SSO_APP_ID",
-  appType: "oauth/oidc/saml",
-  appDomain: "SSO_APP_DOMAIN",
-  nonce: Math.random(),
-  timestamp: Date.now()
+  appType: "可填：oauth/oidc/saml", // 默认 oidc
+  appDomain: "SSO_APP_DOMAIN"
 });
 
 // 发起单点登录，会跳转到登录页面，采用授权码模式，需要相关应用开启授权码模式
@@ -90,9 +88,7 @@ let res = await auth.logout();
 let auth = new AuthingSSO({
   appId: "SSO_APP_ID",
   appType: "oidc",
-  appDomain: "SSO_APP_DOMAIN",
-  nonce: Math.random(),
-  timestamp: Date.now()
+  appDomain: "SSO_APP_DOMAIN"
 });
 ```
 
