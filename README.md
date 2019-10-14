@@ -53,6 +53,12 @@ let res = await auth.trackSession();
  * {
  *    session: { appId: 'xxx', type: 'oidc/oauth/saml', userId: 'yyy'}
  * }
+ *
+ * 如果 session 不存在，返回：
+ *
+ * {
+ *   session: null
+ * }
  * */
 ```
 
