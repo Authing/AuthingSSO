@@ -51,7 +51,18 @@ auth.login();
 let res = await auth.trackSession();
 /**
  * {
- *    session: { appId: 'xxx', type: 'oidc/oauth/saml', userId: 'yyy'}
+ *    session: { appId: 'xxx', type: 'oidc/oauth/saml', userId: 'yyy'},
+ *    userInfo: {
+ *      "_id": "USER_ID",
+ *      "email": "USER_EMAIL",
+ *      "registerInClient": "CLIENT_ID",
+ *      "token": "JTW_TOKEN",
+ *      "tokenExpiredAt": "2019-10-28 10:15:32",
+ *      "photo": "PICTURE",
+ *      "company": "",
+ *      "nickname": "NICKNAME",
+ *      "username": "USERNAME",
+ *   }
  * }
  *
  * 如果 session 不存在，返回：
