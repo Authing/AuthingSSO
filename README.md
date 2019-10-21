@@ -32,6 +32,8 @@ import AuthingSSO from "@authing/sso";
 
 ### 发起登录
 
+#### 跳转登录
+
 ```js
 import AuthingSSO from "@authing/sso";
 
@@ -44,6 +46,27 @@ let auth = new AuthingSSO({
 // 发起单点登录，会跳转到登录页面，采用授权码模式，需要相关应用开启授权码模式
 auth.login();
 ```
+
+#### 窗口登录
+
+```js
+import AuthingSSO from "@authing/sso";
+
+let auth = new AuthingSSO({
+  appId: "SSO_APP_ID",
+  appType: "可填：oauth/oidc/saml", // 默认 oidc
+  appDomain: "SSO_APP_DOMAIN"
+});
+
+// 发起单点登录，会弹出一个窗口，里面是登录页面，采用授权码模式，需要相关应用开启授权码模式
+auth.windowLogin();
+```
+
+业务域名回调地址需要托管一个 html 文件，用于将得到的 code access_token id_token 等参数，通过 postMessage 的方式发送给父窗口，然后将本窗口关闭。
+
+例如，回调地址填写的是 https://example.com/handle.html，这个 html 内部需要编写一段发送 postMessage 的代码，负责从 url 中取出相关参数并传递给父窗口。
+
+Github 参考代码：[https://github.com/Authing/oidc-window](https://github.com/Authing/oidc-window)
 
 ### 查询登录状态
 
