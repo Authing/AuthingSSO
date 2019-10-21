@@ -6,8 +6,8 @@
 export default function QueryOIDCAppInfoByAppID(variables) {
   return {
     operationName: 'QueryOIDCAppInfoByAppID',
-    query: `query QueryOIDCAppInfoByAppID($appId: String, $responseType: String) {
-      QueryOIDCAppInfoByAppID(appId: $appId, responseType: $responseType) {
+    query: `query QueryOIDCAppInfoByAppID($appId: String, $responseType: String, $redirectUrl: String) {
+      QueryOIDCAppInfoByAppID(appId: $appId, responseType: $responseType, redirectUrl: $redirectUrl) {
         _id
         name
         image

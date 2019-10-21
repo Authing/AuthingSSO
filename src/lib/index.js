@@ -42,8 +42,8 @@ class AuthingSSO {
       baseURL: this.graphQLURL
     });
     let mappings = {
-      oauth: queryOAuthAppInfoByAppID.bind(this, { appId: this.options.appId, responseType: this.options.responseType }),
-      oidc: queryOIDCAppInfoByAppID.bind(this, { appId: this.options.appId, responseType: this.options.responseType }),
+      oauth: queryOAuthAppInfoByAppID.bind(this, { appId: this.options.appId, responseType: this.options.responseType, redirectUrl: this.options.redirectUrl }),
+      oidc: queryOIDCAppInfoByAppID.bind(this, { appId: this.options.appId, responseType: this.options.responseType, redirectUrl: this.options.redirectUrl }),
       saml: querySAMLServiceProviderInfoByAppID.bind(this, {
         appId: this.options.appId
       })
