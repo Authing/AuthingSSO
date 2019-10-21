@@ -26,8 +26,7 @@ export default {
       appId: "5da6adafb4e683756fb64b68",
       appType: "oauth",
       appDomain: "23r23r5q24r.localtest.com",
-      responseType: 'implicit',
-      redirectUrl: 'https://baidu.com',
+
       nonce: 113,
       timestamp: Date.now(),
       dev: true

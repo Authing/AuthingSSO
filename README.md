@@ -85,6 +85,11 @@ let res = await auth.trackSession();
  *      "company": "",
  *      "nickname": "NICKNAME",
  *      "username": "USERNAME",
+ *   },
+ *   urlParams: {
+ *      code: 'xxx', // 这些参数是从 url 中获取到的，需要开发者自己存储以备使用
+ *      id_token: 'ID_TOKEN',
+ *      access_token: 'ACCESS_TOKEN'
  *   }
  * }
  *
@@ -117,8 +122,10 @@ let res = await auth.logout();
 | 参数名 | 是否必填 | 描述 | 默认 |
 | ----- | ------- | ---- | -- |
 | appId | 是 | SSO 应用的 ID | - |
-| appType | 是 | SSO 应用的 类型，可选值为 `oidc`，`oauth`，`saml` | - |
 | appDomain | 是 | SSO 应用域名，例如 `app1.authing.cn` | - |
+| appType | 否 | SSO 应用的 类型，可选值为 `oidc`，`oauth`，`saml` | `oidc` |
+| responseType | 否 | SSO 应用授权流程，可选值为 `code`，`implicit` | `code` |
+| redirectUrl | 否 | SSO 应用回调域名 | 在 Authing 控制台配置的第一个业务域名 |
 | nonce | 否 | 随机数 | 随机数 |
 | timestamp | 否 | 时间戳 | 当前时间戳 |
 
@@ -159,6 +166,11 @@ let res = await auth.trackSession();
  *      "company": "",
  *      "nickname": "NICKNAME",
  *      "username": "USERNAME",
+ *   },
+ *   urlParams: {
+ *      code: 'xxx', // 这些参数是从 url 中获取到的，需要开发者自己存储以备使用
+ *      id_token: 'ID_TOKEN',
+ *      access_token: 'ACCESS_TOKEN'
  *   }
  * }
  *
