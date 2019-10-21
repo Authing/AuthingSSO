@@ -22,12 +22,14 @@ export default {
     //   dev: true
     // });
     // oauth
-    this.auth = new AuthingSSO({
-      appId: "5cded9bf4efab36f02fa666a",
+    window.auth = this.auth = new AuthingSSO({
+      appId: "5da3fe05b4e6838272b64b67",
       appType: "oidc",
-      appDomain: "first-oidc-app.authing.cn",
+      appDomain: "yelexin.localtest.com",
+      responseType: 'implicit',
       nonce: 113,
       timestamp: Date.now(),
+      dev: true
     });
     // saml sp
     // this.auth = new AuthingSSO({

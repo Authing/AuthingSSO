@@ -1,8 +1,8 @@
-import axios from "axios";
-import GraphQLClient from "./graphql";
-import queryOAuthAppInfoByAppID from "./gql/queryOAuthAppInfoByAppID";
-import queryOIDCAppInfoByAppID from "./gql/queryOIDCAppInfoByAppID";
-import querySAMLServiceProviderInfoByAppID from "./gql/querySAMLServiceProviderInfoByAppID";
+import axios from 'axios';
+import GraphQLClient from './graphql';
+import queryOAuthAppInfoByAppID from './gql/queryOAuthAppInfoByAppID';
+import queryOIDCAppInfoByAppID from './gql/queryOIDCAppInfoByAppID';
+import querySAMLServiceProviderInfoByAppID from './gql/querySAMLServiceProviderInfoByAppID';
 class AuthingSSO {
   /**
    * @param options.appId {String} SSO 应用 id
@@ -19,27 +19,20 @@ class AuthingSSO {
         .toString()
         .slice(2, 8),
       timestamp: parseInt(Date.now() / 1000),
-      appType: "oidc"
+      appType: 'oidc',
+      responseType: 'code'
     };
-    this.options = { ...this.options, ...options };
+    this.options = Object.assign({}, this.options, options);
     // 开发模式 flag
     this.dev = !!this.options.dev;
     // 检查初始化是否传入了必须的参数
     this._checkOptions();
-    this.logoutURL =
-      (this.dev ? "http://" : "https://") +
-      this.options.appDomain +
-      "/cas/logout";
-    this.trackSessionURL =
-      (this.dev ? "http://" : "https://") +
-      this.options.appDomain +
-      "/cas/session";
+    this.logoutURL = (this.dev ? 'http://' : 'https://') + this.options.appDomain + '/cas/logout';
+    this.trackSessionURL = (this.dev ? 'http://' : 'https://') + this.options.appDomain + '/cas/session';
     try {
       this.graphQLURL = this.options.host.oauth;
     } catch (err) {
-      this.graphQLURL = this.dev
-        ? "http://localhost:5556/graphql"
-        : "https://oauth.authing.cn/graphql";
+      this.graphQLURL = this.dev ? 'http://localhost:5556/graphql' : 'https://oauth.authing.cn/graphql';
     }
     this.appInfo = this._queryAppInfo();
   }
@@ -50,49 +43,42 @@ class AuthingSSO {
     });
     let mappings = {
       oauth: queryOAuthAppInfoByAppID.bind(this, { appId: this.options.appId }),
-      oidc: queryOIDCAppInfoByAppID.bind(this, { appId: this.options.appId }),
+      oidc: queryOIDCAppInfoByAppID.bind(this, { appId: this.options.appId, responseType: this.options.responseType }),
       saml: querySAMLServiceProviderInfoByAppID.bind(this, {
         appId: this.options.appId
       })
     };
     let mappings2 = {
-      oauth: "QueryAppInfoByAppID",
-      oidc: "QueryOIDCAppInfoByAppID",
-      saml: "QuerySAMLServiceProviderInfoByAppID"
+      oauth: 'QueryAppInfoByAppID',
+      oidc: 'QueryOIDCAppInfoByAppID',
+      saml: 'QuerySAMLServiceProviderInfoByAppID'
     };
     let appInfo;
     if (this.options.appType in mappings) {
-      appInfo = await OAuthClient.request(
-        mappings[this.options.appType]()
-      ).then(res => {
+      appInfo = await OAuthClient.request(mappings[this.options.appType]()).then(res => {
         return res[mappings2[this.options.appType]];
       });
     } else {
-      throw Error("appType 类型错误，可选参数为 oauth oidc saml");
+      throw Error('appType 类型错误，可选参数为 oauth oidc saml');
     }
     return appInfo;
   }
   _checkOptions() {
-    let need = ["appId", "appDomain", "appType"];
+    let need = ['appId', 'appDomain', 'appType'];
     let keys = Object.keys(this.options);
     for (let i = 0; i < need.length; i++) {
       if (!keys.includes(need[i])) {
-        throw Error("AuthingSSO 初始化：缺少 " + need[i] + " 参数");
+        throw Error('AuthingSSO 初始化：缺少 ' + need[i] + ' 参数');
       }
     }
     if (!/^[0-9a-f]{24}$/.test(this.options.appId)) {
-      throw Error(
-        "appId 格式错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId"
-      );
+      throw Error('appId 格式错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId');
     }
     return true;
   }
   login() {
     this.appInfo.then(appInfo => {
-      if (!appInfo)
-        throw Error(
-          "appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId"
-        );
+      if (!appInfo) throw Error('appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId');
       let url = appInfo.loginUrl;
       location.href = url;
     });
@@ -102,19 +88,12 @@ class AuthingSSO {
     let leftVal = (screen.width - 500) / 2;
     let topVal = (screen.height - 700) / 2;
     this.appInfo.then(appInfo => {
-      if (!appInfo)
-        throw Error(
-          "appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId"
-        );
+      if (!appInfo) throw Error('appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId');
       let url = appInfo.loginUrl;
-      let popup = window.open(
-        url,
-        "_blank",
-        `width=500,height=700,left=${leftVal},top=${topVal}`
-      );
+      let popup = window.open(url, '_blank', `width=500,height=700,left=${leftVal},top=${topVal}`);
     });
     // 打开新窗口进行登录，把信息通过 PostMessage 发送给前端，开发者需要监听 message 事件
-    
+
     // let timer = setInterval(function() {
     //   // 每秒检查登录窗口是否已经关闭
     //   if (popup.closed) {
@@ -127,20 +106,31 @@ class AuthingSSO {
   // 返回 {idtoken: 123123, access_token: 547567}
   getUrlHash() {
     try {
-      if(location.hash) {
-        let arr = location.hash.substring(1).split("&");
+      if (location.hash) {
+        let arr = location.hash.substring(1).split('&');
         let result = {};
         arr.forEach(item => {
-          let [key, val] = item.split("=");
+          let [key, val] = item.split('=');
           result[key] = val;
         });
         return result;
       } else {
-        return null
+        return null;
       }
     } catch {
-      return { err: "获取失败" };
+      return { err: '获取失败' };
     }
+  }
+  getUrlQuery() {
+    let arr = location.search
+      .slice(1)
+      .split('&')
+      .map(item => item.split('='));
+    let obj = {};
+    arr.forEach(item => {
+      obj[item[0]] = item[1];
+    });
+    return obj;
   }
   async logout() {
     let res = await axios.get(this.logoutURL, {
@@ -169,12 +159,21 @@ class AuthingSSO {
       //   appDomain: this.options.appDomain
       // }
     });
+    let queries = {};
+    if (this.options.responseType === 'code') {
+      queries = this.getUrlQuery();
+      queries = { code: queries.code };
+    } else if (this.options.responseType === 'implicit') {
+      queries = this.getUrlHash();
+      if(queries)
+        queries = { access_token: queries.access_token, id_token: queries.id_token };
+    }
     /**
      * userId 用户 id
      * appId SSO 应用的 id
      * type SSO 应用的类型 oidc saml oauth
      */
-    return res.data;
+    return { ...res.data, ...queries, hint: 'code token id_token 字段只会在第一次回调到业务地址的时候从 url 取出，请自行存储以备使用' };
   }
 }
 
