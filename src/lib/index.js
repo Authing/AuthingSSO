@@ -42,7 +42,7 @@ class AuthingSSO {
       baseURL: this.graphQLURL
     });
     let mappings = {
-      oauth: queryOAuthAppInfoByAppID.bind(this, { appId: this.options.appId }),
+      oauth: queryOAuthAppInfoByAppID.bind(this, { appId: this.options.appId, responseType: this.options.responseType }),
       oidc: queryOIDCAppInfoByAppID.bind(this, { appId: this.options.appId, responseType: this.options.responseType }),
       saml: querySAMLServiceProviderInfoByAppID.bind(this, {
         appId: this.options.appId
@@ -159,21 +159,56 @@ class AuthingSSO {
       //   appDomain: this.options.appDomain
       // }
     });
-    let queries = {};
-    if (this.options.responseType === 'code') {
-      queries = this.getUrlQuery();
-      queries = { code: queries.code };
-    } else if (this.options.responseType === 'implicit') {
-      queries = this.getUrlHash();
-      if(queries)
-        queries = { access_token: queries.access_token, id_token: queries.id_token };
+    if (res.data.session) {
+      let paramsDocs = {
+        'OIDC code 使用文档': 'https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#shi-yong-code-huan-qu-token', // 当 response_type 为 code 且 appType 为 oidc 时显示
+        'OIDC 本地验证 access_token 和 id_token 的方式': 'https://docs.authing.cn/authing/advanced/authentication/verify-jwt-token#oidc-secret-token', // 当应用类型为 OIDC 应用时且 response_type 为 code 时显示
+        'OAuth access_token 合法性在线验证': 'https://docs.authing.cn/authing/advanced/authentication/verify-jwt-token#yan-zheng-oauth-accesstoken-he-fa-xing', // 当应用类型为 OAuth 应用时显示
+        'OIDC access_token 和 id_token 合法性在线验证':
+          'https://docs.authing.cn/authing/advanced/authentication/verify-jwt-token#yan-zheng-oidc-accesstoken-huo-idtoken-de-he-fa-xing' // 当应用类型为 OIDC 应用时显示
+      };
+      if (this.options.appType === 'oidc') {
+        paramsDocs = {
+          'OIDC 本地验证 access_token 和 id_token 的方式': 'https://docs.authing.cn/authing/advanced/authentication/verify-jwt-token#oidc-secret-token', // 当应用类型为 OIDC 应用时且 response_type 为 code 时显示
+          'OIDC access_token 和 id_token 合法性在线验证':
+            'https://docs.authing.cn/authing/advanced/authentication/verify-jwt-token#yan-zheng-oidc-accesstoken-huo-idtoken-de-he-fa-xing' // 当应用类型为 OIDC 应用时显示
+        };
+        if (this.options.responseType === 'code') {
+          paramsDocs['OIDC code 使用文档'] = 'https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#shi-yong-code-huan-qu-token';
+        } else if (this.options.responseType === 'implicit') {
+          paramsDocs['OIDC implicit 文档'] = 'https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#shi-yong-yin-shi-liu-cheng-implicit-flow';
+        }
+      } else if (this.options.appType === 'oauth') {
+        paramsDocs = {
+          'OAuth access_token 合法性在线验证': 'https://docs.authing.cn/authing/advanced/authentication/verify-jwt-token#yan-zheng-oauth-accesstoken-he-fa-xing' // 当应用类型为 OAuth 应用时显示
+        };
+        if (this.options.responseType === 'code') {
+          paramsDocs['OAuth code 使用文档'] = 'https://docs.authing.cn/authing/advanced/oauth2/oauth-authorization#shi-yong-authorizationcode-mo-shi';
+        } else if (this.options.responseType === 'implicit') {
+          paramsDocs['OAuth implicit 文档'] = 'https://learn.authing.cn/authing/advanced/oauth2/oauth-authorization#implicit-mo-shi';
+        }
+      }
+
+      let queries = {};
+      if (this.options.responseType === 'code') {
+        queries = this.getUrlQuery();
+        queries = { code: queries.code };
+      } else if (this.options.responseType === 'implicit') {
+        queries = this.getUrlHash();
+        if (queries) queries = { access_token: queries.access_token, id_token: queries.id_token };
+      }
+      /**
+       * userId 用户 id
+       * appId SSO 应用的 id
+       * type SSO 应用的类型 oidc saml oauth
+       */
+      res.data.userInfo['__Token 验证方式说明'] = 'https://docs.authing.cn/authing/advanced/authentication/verify-jwt-token#fa-song-token-gei-authing-fu-wu-qi-yan-zheng';
+      return {
+        ...res.data,
+        urlParams: { ...queries, __参数使用说明: paramsDocs, hint: 'code token id_token 字段只会在第一次回调到业务地址的时候从 url 取出，请自行存储以备使用' },
+      };
     }
-    /**
-     * userId 用户 id
-     * appId SSO 应用的 id
-     * type SSO 应用的类型 oidc saml oauth
-     */
-    return { ...res.data, ...queries, hint: 'code token id_token 字段只会在第一次回调到业务地址的时候从 url 取出，请自行存储以备使用' };
+    return res.data
   }
 }
 

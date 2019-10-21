@@ -23,9 +23,9 @@ export default {
     // });
     // oauth
     window.auth = this.auth = new AuthingSSO({
-      appId: "5da3fe05b4e6838272b64b67",
-      appType: "oidc",
-      appDomain: "yelexin.localtest.com",
+      appId: "5da6adafb4e683756fb64b68",
+      appType: "oauth",
+      appDomain: "23r23r5q24r.localtest.com",
       responseType: 'implicit',
       nonce: 113,
       timestamp: Date.now(),
@@ -55,7 +55,7 @@ export default {
     async handleTrackSession() {
       // let res = await this.auth.login()
       let res = await this.auth.trackSession()
-      alert(JSON.stringify(res))
+      alert(JSON.stringify(res, null, 4))
       console.log(res)
     },
     async handleLogin() {
