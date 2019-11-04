@@ -205,7 +205,7 @@ class AuthingSSO {
       res.data.userInfo['__Token 验证方式说明'] = 'https://docs.authing.cn/authing/advanced/authentication/verify-jwt-token#fa-song-token-gei-authing-fu-wu-qi-yan-zheng';
       return {
         ...res.data,
-        urlParams: { ...queries, __参数使用说明: paramsDocs, hint: 'code token id_token 字段只会在第一次回调到业务地址的时候从 url 取出，请自行存储以备使用' },
+        urlParams: { ...queries, __参数使用说明: paramsDocs, _authing_hint: 'code token id_token 字段只会在第一次回调到业务地址的时候从 url 取出，请自行存储以备使用' },
       };
     }
     return res.data
