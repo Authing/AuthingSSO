@@ -20,7 +20,8 @@ class AuthingSSO {
         .slice(2, 8),
       timestamp: parseInt(Date.now() / 1000),
       appType: 'oidc',
-      responseType: 'code'
+      responseType: 'code',
+      scope: 'openid profile email phone'
     };
     this.options = Object.assign({}, this.options, options);
     // 开发模式 flag
@@ -32,7 +33,7 @@ class AuthingSSO {
     try {
       this.graphQLURL = this.options.host.oauth;
     } catch (err) {
-      this.graphQLURL = this.dev ? 'http://localhost:5556/graphql' : 'https://oauth.authing.cn/graphql';
+      this.graphQLURL = this.dev ? 'http://localhost:5510/graphql' : 'https://oauth.authing.cn/graphql';
     }
     this.appInfo = this._queryAppInfo();
   }
@@ -79,8 +80,13 @@ class AuthingSSO {
   login() {
     this.appInfo.then(appInfo => {
       if (!appInfo) throw Error('appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId');
-      let url = appInfo.loginUrl;
-      location.href = url;
+      let url = new URL(appInfo.loginUrl);
+      url.searchParams.delete('scope')
+      url.searchParams.append('scope', this.options.scope)
+      if(~this.options.scope.indexOf('offline_access')) {
+        url.searchParams.append('prompt', 'consent')
+      }
+      location.href = url.href;
     });
   }
   // 调用这个方法，会弹出一个 window 里面是 guard 的登录页面

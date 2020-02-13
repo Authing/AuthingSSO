@@ -23,10 +23,10 @@ export default {
     // });
     // oauth
     window.auth = this.auth = new AuthingSSO({
-      appId: "5da6adafb4e683756fb64b68",
-      appType: "oauth",
-      appDomain: "23r23r5q24r.localtest.com",
-
+      appId: "5e3a3b2315a0b8398cdaaa0e",
+      appType: "oidc",
+      appDomain: "test.littleimp.cn",
+      scope: 'openid profile email phone offline_access',
       nonce: 113,
       timestamp: Date.now(),
       dev: true
