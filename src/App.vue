@@ -27,6 +27,7 @@ export default {
       appType: "oidc",
       appDomain: "test.littleimp.cn",
       scope: 'openid profile email phone offline_access',
+      state: 'testgood',
       nonce: 113,
       timestamp: Date.now(),
       dev: true

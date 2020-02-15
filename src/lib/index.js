@@ -21,7 +21,10 @@ class AuthingSSO {
       timestamp: parseInt(Date.now() / 1000),
       appType: 'oidc',
       responseType: 'code',
-      scope: 'openid profile email phone'
+      scope: 'openid profile email phone',
+      state: Math.random()
+        .toString(36)
+        .slice(2)
     };
     this.options = Object.assign({}, this.options, options);
     // 开发模式 flag
@@ -81,10 +84,12 @@ class AuthingSSO {
     this.appInfo.then(appInfo => {
       if (!appInfo) throw Error('appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId');
       let url = new URL(appInfo.loginUrl);
-      url.searchParams.delete('scope')
-      url.searchParams.append('scope', this.options.scope)
-      if(~this.options.scope.indexOf('offline_access')) {
-        url.searchParams.append('prompt', 'consent')
+      url.searchParams.delete('scope');
+      url.searchParams.append('scope', this.options.scope);
+      url.searchParams.delete('state');
+      url.searchParams.append('state', this.options.state);
+      if (~this.options.scope.indexOf('offline_access')) {
+        url.searchParams.append('prompt', 'consent');
       }
       location.href = url.href;
     });
@@ -211,10 +216,10 @@ class AuthingSSO {
       res.data.userInfo['__Token 验证方式说明'] = 'https://docs.authing.cn/authing/advanced/authentication/verify-jwt-token#fa-song-token-gei-authing-fu-wu-qi-yan-zheng';
       return {
         ...res.data,
-        urlParams: { ...queries, __参数使用说明: paramsDocs, __authing_hint: 'code token id_token 字段只会在第一次回调到业务地址的时候从 url 取出，请自行存储以备使用' },
+        urlParams: { ...queries, __参数使用说明: paramsDocs, __authing_hint: 'code token id_token 字段只会在第一次回调到业务地址的时候从 url 取出，请自行存储以备使用' }
       };
     }
-    return res.data
+    return res.data;
   }
 }
 
