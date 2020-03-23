@@ -129,7 +129,7 @@ let res = await auth.logout();
 | nonce | 否 | 随机数 | 随机数 |
 | timestamp | 否 | 时间戳 | 当前时间戳 |
 
-示例
+示例：
 
 ```js
 let auth = new AuthingSSO({
@@ -141,7 +141,9 @@ let auth = new AuthingSSO({
 
 ### AuthingSSO.prototype.login
 
-示例
+请求应用的授权地址，进行登录。
+
+示例：
 
 ```js
 auth.login();
@@ -149,7 +151,9 @@ auth.login();
 
 ### AuthingSSO.prototype.trackSession
 
-示例
+查询单点登录状态，已登录时会返回会话信息和用户信息。
+
+示例：
 
 ```js
 let res = await auth.trackSession();
@@ -184,7 +188,9 @@ let res = await auth.trackSession();
 
 ### AuthingSSO.prototype.logout
 
-示例
+从应用单点登出。
+
+示例：
 
 ```js
 let res = await auth.logout();
@@ -192,6 +198,22 @@ let res = await auth.logout();
  * {
  *    message: "单点登出成功",
  *    code: 200
+ * }
+ * */
+```
+
+### AuthingSSO.prototype.getUrlHash
+
+获取 Url 中的 Hash 部分内容，返回一个 JSON 对象。
+
+示例：
+
+```js
+let obj = auth.getUrlHash()
+/**
+ * {
+ *    id_token: 'xxx',
+ *    access_token: 'xxx'
  * }
  * */
 ```
