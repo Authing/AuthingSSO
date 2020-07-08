@@ -3,6 +3,7 @@ import GraphQLClient from './graphql';
 import queryOAuthAppInfoByAppID from './gql/queryOAuthAppInfoByAppID';
 import queryOIDCAppInfoByAppID from './gql/queryOIDCAppInfoByAppID';
 import querySAMLServiceProviderInfoByAppID from './gql/querySAMLServiceProviderInfoByAppID';
+
 class AuthingSSO {
   /**
    * @param options.appId {String} SSO 应用 id
@@ -39,6 +40,9 @@ class AuthingSSO {
       this.graphQLURL = this.dev ? 'http://localhost:5510/graphql' : 'https://oauth.authing.cn/graphql';
     }
     this.appInfo = this._queryAppInfo();
+
+    // 是否已经从 href 中获取过了 code 和 access_token
+    this.stored = false
   }
   // 根据 SSO 应用的类型和 id 查询相关信息，主要用于生成授权链接
   async _queryAppInfo() {
@@ -103,16 +107,8 @@ class AuthingSSO {
       let url = appInfo.loginUrl;
       let popup = window.open(url, '_blank', `width=500,height=700,left=${leftVal},top=${topVal}`);
     });
-    // 打开新窗口进行登录，把信息通过 PostMessage 发送给前端，开发者需要监听 message 事件
-
-    // let timer = setInterval(function() {
-    //   // 每秒检查登录窗口是否已经关闭
-    //   if (popup.closed) {
-    //     clearInterval(timer);
-
-    //   }
-    // }, 1000);
   }
+
   // authing.cn/#idtoken=123123&access_token=547567
   // 返回 {idtoken: 123123, access_token: 547567}
   getUrlHash() {
@@ -145,12 +141,18 @@ class AuthingSSO {
   }
   async logout() {
     let res = await axios.get(this.logoutURL, {
-      withCredentials: true
-      // headers: {
-      //   appId: this.options.clientId,
-      //   appDomain: this.options.appDomain
-      // }
+      withCredentials: true,
+      headers: {
+        'x-authing-oidc-code': localStorage.getItem('x-authing-oidc-code') || '',
+        'x-authing-oidc-accesstoken': localStorage.getItem('x-authing-oidc-accesstoken') || '',
+        'x-authing-oauth-code': localStorage.getItem('x-authing-oauth-code') || '',
+        'x-authing-oauth-accesstoken': localStorage.getItem('x-authing-oauth-accesstoken') || ''
+      }
     });
+    localStorage.removeItem('x-authing-oidc-code')
+    localStorage.removeItem('x-authing-oidc-accesstoken')
+    localStorage.removeItem('x-authing-oauth-code')
+    localStorage.removeItem('x-authing-oauth-accesstoken')
     /**
      * {
      *    code: 200,
@@ -163,12 +165,41 @@ class AuthingSSO {
    * @description 带着 SSO app 的各种信息 + cookie 去请求 appDomain/cas，服务器返回一些用户信息
    */
   async trackSession() {
+
+    if (!this.stored) {
+      let queries = this.getUrlQuery()
+      let hashes = this.getUrlHash()
+      if (this.options.appType === 'oidc') {
+        let code = queries && queries.code || ''
+        let access_tken = hashes && hashes.access_token || ''
+        if (code) {
+          localStorage.setItem('x-authing-oidc-accesstoken', code)
+        }
+        if (access_tken) {
+          localStorage.setItem('x-authing-oidc-accesstoken', access_tken)
+        }
+      } else if (this.options.appType === 'oauth') {
+        let code = queries && queries.code || ''
+        let access_tken = hashes && hashes.access_token || ''
+        if (code) {
+          localStorage.setItem('x-authing-oauth-code', code)
+        }
+        if (access_tken) {
+          localStorage.setItem('x-authing-oauth-accesstoken', access_tken)
+        }
+      }
+
+      this.stored = true
+    }
+
     let res = await axios.get(this.trackSessionURL, {
-      withCredentials: true
-      // headers: {
-      //   appId: this.options.clientId,
-      //   appDomain: this.options.appDomain
-      // }
+      withCredentials: true,
+      headers: {
+        'x-authing-oidc-code': localStorage.getItem('x-authing-oidc-accesstoken') || '',
+        'x-authing-oidc-accesstoken': localStorage.getItem('x-authing-oidc-accesstoken') || '',
+        'x-authing-oauth-code': localStorage.getItem('x-authing-oauth-code') || '',
+        'x-authing-oauth-accesstoken': localStorage.getItem('x-authing-oauth-accesstoken') || ''
+      }
     });
     if (res.data.session) {
       let paramsDocs = {

@@ -12,26 +12,50 @@ import AuthingSSO from "./lib/index";
 export default {
   name: "app",
   mounted() {
-    // oidc
-    // this.auth = new AuthingSSO({
-    //   appId: "5ceb6fecf218f50689b72c1c",
-    //   appType: "oidc",
-    //   appDomain: "oidc1.localtest.com",
-    //   nonce: 113,
-    //   timestamp: Date.now(),
-    //   dev: true
+    // OAuth 授权码模式
+    // window.auth = this.auth = new AuthingSSO({
+    //   appId: "5f057c6b13b687030fc8bb5d",
+    //   appType: "oauth",
+    //   appDomain: "goood.authing.com",
+    //   host: {
+    //     oauth: "http://localhost:5510/graphql"
+    //   },
     // });
-    // oauth
+
+    // OAuth implicit 模式
     window.auth = this.auth = new AuthingSSO({
-      appId: "5e3a3b2315a0b8398cdaaa0e",
-      appType: "oidc",
-      appDomain: "test.littleimp.cn",
-      scope: 'openid profile email phone offline_access',
-      state: 'testgood',
-      nonce: 113,
-      timestamp: Date.now(),
-      dev: true
+      appId: "5f057c6b13b687030fc8bb5d",
+      appType: "oauth",
+      appDomain: "goood.authing.com",
+      responseType: 'implicit',
+      host: {
+        oauth: "http://localhost:5510/graphql"
+      }
     });
+
+    // OIDC - 授权码模式
+    // window.auth = this.auth = new AuthingSSO({
+    //   appId: "5ef82ab9cd7a6b682ba3c7fd",
+    //   appType: "oidc",
+    //   appDomain: "tracksession.authing.com",
+    //   scope: "openid profile",
+    //   host: {
+    //     oauth: "http://localhost:5510/graphql"
+    //   }
+    // });
+
+    // OIDC - implicit 模式
+    //  window.auth = this.auth = new AuthingSSO({
+    //   appId: "5ef82ab9cd7a6b682ba3c7fd",
+    //   appType: "oidc",
+    //   appDomain: "tracksession.authing.com",
+    //   scope: "openid profile",
+    //   responseType: 'implicit',
+    //   host: {
+    //     oauth: "http://localhost:5510/graphql"
+    //   }
+    // });
+
     // saml sp
     // this.auth = new AuthingSSO({
     //   appId: "5cefc1148e241e66339fd601",
@@ -50,30 +74,28 @@ export default {
     //   timestamp: Date.now(),
     //   dev: true
     // });
-    console.log(this.auth)
+    console.log(this.auth);
   },
   methods: {
     async handleTrackSession() {
       // let res = await this.auth.login()
-      let res = await this.auth.trackSession()
-      alert(JSON.stringify(res, null, 4))
-      console.log(res)
+      let res = await this.auth.trackSession();
+      console.log(res);
     },
     async handleLogin() {
-      this.auth.login()
+      this.auth.login();
     },
     handleWindowLogin() {
-      this.auth.windowLogin()
+      this.auth.windowLogin();
     },
     async handleLogout() {
-      let res = await this.auth.logout()
-      alert(JSON.stringify(res))
-      console.log(res)
+      let res = await this.auth.logout();
+      alert(JSON.stringify(res));
+      console.log(res);
     }
   }
 };
 </script>
 
 <style>
-
 </style>
