@@ -122,8 +122,7 @@ let res = await auth.logout();
 | 参数名 | 是否必填 | 描述 | 默认 |
 | ----- | ------- | ---- | -- |
 | appId | 是 | SSO 应用的 ID | - |
-| appDomain | 是 | SSO 应用域名，不带 
-`https://`，形如 `xxx.authing.cn`，`xxx` 为你填在应用详情中的认证地址字段内的内容 | - |
+| appDomain | 是 | SSO 应用域名，不带 `https://`，形如 `xxx.authing.cn`，`xxx` 为你填在应用详情中的认证地址字段内的内容 | - |
 | appType | 否 | SSO 应用的 类型，可选值为 `oidc`，`oauth`，`saml` | `oidc` |
 | responseType | 否 | SSO 应用授权流程，可选值为 `code`，`implicit` | `code` |
 | redirectUrl | 否 | SSO 应用回调域名 | 在 Authing 控制台配置的第一个业务域名 |
