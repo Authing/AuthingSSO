@@ -28,7 +28,7 @@ import AuthingSSO from "@authing/sso";
 
 ## 开始使用
 
-需要先注册一个 [Authing](https://authing.cn/login) 账号，并[创建一个 OIDC 应用](https://docs.authing.cn/authing/advanced/oidc/create-oidc)。
+需要先注册一个 [Authing](https://console.authing.cn) 账号，并[创建一个 OIDC 应用](https://docs.authing.cn/authentication/oidc/create-oidc.html)。
 
 ### 发起登录
 
@@ -64,7 +64,7 @@ auth.windowLogin();
 
 业务域名回调地址需要托管一个 html 文件，用于将得到的 code access_token id_token 等参数，通过 postMessage 的方式发送给父窗口，然后将本窗口关闭。
 
-例如，回调地址填写的是 https://example.com/handle.html，这个 html 内部需要编写一段发送 postMessage 的代码，负责从 url 中取出相关参数并传递给父窗口。
+例如，回调地址填写的是 https://example.com/handle.html 这个 html 内部需要编写一段发送 postMessage 的代码，负责从 url 中取出相关参数并传递给父窗口。
 
 Github 参考代码：[https://github.com/Authing/oidc-window](https://github.com/Authing/oidc-window)
 
