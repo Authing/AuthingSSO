@@ -13,7 +13,7 @@ $ npm install @authing/sso --save
 接着可以通过以下方式使用
 
 ```js
-import AuthingSSO from "@authing/sso";
+import AuthingSSO from '@authing/sso';
 ```
 
 ### 通过 CDN 安装
@@ -35,12 +35,12 @@ import AuthingSSO from "@authing/sso";
 #### 跳转登录
 
 ```js
-import AuthingSSO from "@authing/sso";
+import AuthingSSO from '@authing/sso';
 
 let auth = new AuthingSSO({
-  appId: "SSO_APP_ID",
-  appType: "可填：oauth/oidc/saml", // 默认 oidc
-  appDomain: "SSO_APP_DOMAIN"
+  appId: 'SSO_APP_ID',
+  appType: '可填：oauth/oidc', // 默认 oidc
+  appDomain: 'SSO_APP_DOMAIN',
 });
 
 // 发起单点登录，会跳转到登录页面，采用授权码模式，需要相关应用开启授权码模式
@@ -50,12 +50,12 @@ auth.login();
 #### 窗口登录
 
 ```js
-import AuthingSSO from "@authing/sso";
+import AuthingSSO from '@authing/sso';
 
 let auth = new AuthingSSO({
-  appId: "SSO_APP_ID",
-  appType: "可填：oauth/oidc/saml", // 默认 oidc
-  appDomain: "SSO_APP_DOMAIN"
+  appId: 'SSO_APP_ID',
+  appType: '可填：oauth/oidc', // 默认 oidc
+  appDomain: 'SSO_APP_DOMAIN',
 });
 
 // 发起单点登录，会弹出一个窗口，里面是登录页面，采用授权码模式，需要相关应用开启授权码模式
@@ -68,13 +68,30 @@ auth.windowLogin();
 
 Github 参考代码：[https://github.com/Authing/oidc-window](https://github.com/Authing/oidc-window)
 
+### 跳转注册页
+
+有时你可能希望让用户跳转到注册页面，使用示例如下：
+
+```js
+import AuthingSSO from '@authing/sso';
+
+let auth = new AuthingSSO({
+  appId: 'SSO_APP_ID',
+  appType: '可填：oauth/oidc', // 默认 oidc
+  appDomain: 'SSO_APP_DOMAIN',
+});
+
+// 调用此函数可以直接跳转到注册页面
+auth.register();
+```
+
 ### 查询登录状态
 
 ```js
 let res = await auth.trackSession();
 /**
  * {
- *    session: { appId: 'xxx', type: 'oidc/oauth/saml', userId: 'yyy'},
+ *    session: { appId: 'xxx', type: 'oidc/oauth', userId: 'yyy'},
  *    userInfo: {
  *      "_id": "USER_ID",
  *      "email": "USER_EMAIL",
@@ -119,23 +136,23 @@ let res = await auth.logout();
 
 构造函数，接受一个对象作为参数。对象中的参数列表如下：
 
-| 参数名 | 是否必填 | 描述 | 默认 |
-| ----- | ------- | ---- | -- |
-| appId | 是 | SSO 应用的 ID | - |
-| appDomain | 是 | SSO 应用域名，例如 `app1.authing.cn` | - |
-| appType | 否 | SSO 应用的 类型，可选值为 `oidc`，`oauth`，`saml` | `oidc` |
-| responseType | 否 | SSO 应用授权流程，可选值为 `code`，`implicit` | `code` |
-| redirectUrl | 否 | SSO 应用回调域名 | 在 Authing 控制台配置的第一个业务域名 |
-| nonce | 否 | 随机数 | 随机数 |
-| timestamp | 否 | 时间戳 | 当前时间戳 |
+| 参数名       | 是否必填 | 描述                                          | 默认                                  |
+| ------------ | -------- | --------------------------------------------- | ------------------------------------- |
+| appId        | 是       | SSO 应用的 ID                                 | -                                     |
+| appDomain    | 是       | SSO 应用域名，例如 `app1.authing.cn`          | -                                     |
+| appType      | 否       | SSO 应用的 类型，可选值为 `oidc`，`oauth`     | `oidc`                                |
+| responseType | 否       | SSO 应用授权流程，可选值为 `code`，`implicit` | `code`                                |
+| redirectUrl  | 否       | SSO 应用回调域名                              | 在 Authing 控制台配置的第一个业务域名 |
+| nonce        | 否       | 随机数                                        | 随机数                                |
+| timestamp    | 否       | 时间戳                                        | 当前时间戳                            |
 
 示例：
 
 ```js
 let auth = new AuthingSSO({
-  appId: "SSO_APP_ID",
-  appType: "oidc",
-  appDomain: "SSO_APP_DOMAIN"
+  appId: 'SSO_APP_ID',
+  appType: 'oidc',
+  appDomain: 'SSO_APP_DOMAIN',
 });
 ```
 
@@ -159,7 +176,7 @@ auth.login();
 let res = await auth.trackSession();
 /**
  * {
- *    session: { appId: 'xxx', type: 'oidc/oauth/saml', userId: 'yyy'},
+ *    session: { appId: 'xxx', type: 'oidc/oauth', userId: 'yyy'},
  *    userInfo: {
  *      "_id": "USER_ID",
  *      "email": "USER_EMAIL",
@@ -209,7 +226,7 @@ let res = await auth.logout();
 示例：
 
 ```js
-let obj = auth.getUrlHash()
+let obj = auth.getUrlHash();
 /**
  * {
  *    id_token: 'xxx',
