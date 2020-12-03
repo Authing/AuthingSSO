@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <button @click="register">Register</button>
     <button @click="handleLogin">Login</button>
     <button @click="handleWindowLogin">windowLogin</button>
     <button @click="handleTrackSession">trackSession</button>
@@ -24,13 +25,9 @@ export default {
 
     // OAuth implicit 模式
     window.auth = this.auth = new AuthingSSO({
-      appId: "5f057c6b13b687030fc8bb5d",
-      appType: "oauth",
-      appDomain: "goood.authing.com",
-      responseType: 'implicit',
-      host: {
-        oauth: "http://localhost:5510/graphql"
-      }
+      appId: "5e109c456ef04e3c9ca54d6b",
+      appType: "oidc",
+      appDomain: "hebut-dorm.authing.cn",
     });
 
     // OIDC - 授权码模式
@@ -92,6 +89,9 @@ export default {
       let res = await this.auth.logout();
       alert(JSON.stringify(res));
       console.log(res);
+    },
+    register() {
+      this.auth.register()
     }
   }
 };

@@ -32,6 +32,7 @@ class AuthingSSO {
     this.dev = !!this.options.dev;
     // 检查初始化是否传入了必须的参数
     this._checkOptions();
+    this.registerURL = (this.dev ? 'http://' : 'https://') + this.options.appDomain + '/register';
     this.logoutURL = (this.dev ? 'http://' : 'https://') + this.options.appDomain + '/cas/logout';
     this.trackSessionURL = (this.dev ? 'http://' : 'https://') + this.options.appDomain + '/cas/session';
     try {
@@ -97,6 +98,9 @@ class AuthingSSO {
       }
       location.href = url.href;
     });
+  }
+  register() {
+    location.href = this.registerURL
   }
   // 调用这个方法，会弹出一个 window 里面是 guard 的登录页面
   windowLogin() {
