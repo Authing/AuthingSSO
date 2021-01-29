@@ -1,3 +1,13 @@
+import "core-js/modules/es6.promise"
+import "core-js/modules/es6.array.find";
+import "core-js/modules/es6.array.find-index";
+import "core-js/modules/es7.array.includes";
+import "core-js/modules/es6.string.includes";
+import "core-js/modules/es6.string.ends-with";
+import "core-js/modules/es6.string.starts-with";
+import "core-js/modules/es7.object.values";
+import "url-polyfill"
+
 import axios from 'axios';
 import GraphQLClient from './graphql';
 import queryOAuthAppInfoByAppID from './gql/queryOAuthAppInfoByAppID';
