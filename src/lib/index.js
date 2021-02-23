@@ -55,6 +55,10 @@ class AuthingSSO {
     // 是否已经从 href 中获取过了 code 和 access_token
     this.stored = false
   }
+
+  // 登录页面可以根据这个 key 识别语言
+  static _langStorageKey = '_authing_lang'
+
   // 根据 SSO 应用的类型和 id 查询相关信息，主要用于生成授权链接
   async _queryAppInfo() {
     let OAuthClient = new GraphQLClient({
@@ -95,7 +99,9 @@ class AuthingSSO {
     }
     return true;
   }
-  login() {
+  login({
+    lang
+  }) {
     this.appInfo.then(appInfo => {
       if (!appInfo) throw Error('appId 错误，请在 OAuth、OIDC 或 SAML 应用配置页面查看正确的 appId');
       let url = new URL(appInfo.loginUrl);
@@ -103,14 +109,23 @@ class AuthingSSO {
       url.searchParams.append('scope', this.options.scope);
       url.searchParams.delete('state');
       url.searchParams.append('state', this.options.state);
+      if (lang) {
+        url.searchParams.append(AuthingSSO._langStorageKey, lang) 
+      }
       if (~this.options.scope.indexOf('offline_access')) {
         url.searchParams.append('prompt', 'consent');
       }
       location.href = url.href;
     });
   }
-  register() {
-    location.href = this.registerURL
+  register({
+    lang
+  }) {
+    let url = new URL(this.registerURL)
+    if (lang) {
+      url.searchParams.append(AuthingSSO._langStorageKey, lang) 
+    }
+    location.href = url.href
   }
   // 调用这个方法，会弹出一个 window 里面是 guard 的登录页面
   windowLogin() {
