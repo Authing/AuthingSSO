@@ -120,7 +120,7 @@ class AuthingSSO {
     }
     return true
   }
-  login({ lang }) {
+  login({ lang } = {}) {
     this.appInfo.then((appInfo) => {
       if (!appInfo)
         throw Error(
@@ -140,7 +140,7 @@ class AuthingSSO {
       location.href = url.href
     })
   }
-  register({ lang }) {
+  register({ lang } = {}) {
     let url = new URL(this.registerURL)
     if (lang) {
       url.searchParams.append(AuthingSSO._langStorageKey, lang)
