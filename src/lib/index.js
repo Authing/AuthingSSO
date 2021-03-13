@@ -52,6 +52,9 @@ class AuthingSSO {
       (this.dev ? 'http://' : 'https://') +
       this.options.appDomain +
       '/cas/session'
+    this.createSessionURL = (this.dev ? 'http://' : 'https://') +
+    this.options.appDomain +
+    '/cas/createSession'
     try {
       this.graphQLURL = this.options.host.oauth
     } catch (err) {
@@ -221,6 +224,21 @@ class AuthingSSO {
      */
     return res.data
   }
+
+
+  /**
+   * @description 用户手动创建 Session
+   *
+   */
+  async createSession(token){
+    const res = await axios.post(this.createSessionURL, {}, {
+      headers: {
+        token
+      }
+    })
+    return res.data
+  }
+
   /**
    * @description 带着 SSO app 的各种信息 + cookie 去请求 appDomain/cas，服务器返回一些用户信息
    */
