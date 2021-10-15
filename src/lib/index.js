@@ -245,7 +245,7 @@ class AuthingSSO {
   async getAccessTokenSilently() {
     // 1. Create an iframe:
     const iframe = document.createElement("iframe");
-    const redirectURI = this.options.redirectUrl; // Note: Use http://localhost:3000 for demo only!
+    const redirectURI = this.options.redirectUrl;
     const stateString = Math.random().toString().slice(2).toString(16);
     const nonceString = Math.random().toString().slice(2).toString(16);
     const iframeSrcLink = `https://rx4tii-demo.authing.cn/oidc/auth?client_id=${this.options.appId}&redirect_uri=${redirectURI}&response_type=id_token%20token&scope=openid+profile+email+phone&state=${stateString}&response_mode=web_message&nonce=${nonceString}&prompt=none`;
@@ -253,17 +253,20 @@ class AuthingSSO {
     iframe.src = iframeSrcLink;
     iframe.hidden = true;
     document.body.append(iframe);
+
     // 2. Handle the message event initiated by the iframe:
     return new Promise((resolve, reject) => {
-      const eventListener = window.addEventListener("message", function (msgEvent) {
+      const msgEventListener = window.addEventListener("message", function (msgEvent) {
         if (msgEvent.data.response.error) {
           reject(new Error(msgEvent.data.response.error_description));
-          window.removeEventListener('message', eventListener);
+          window.removeEventListener('message', msgEventListener);
+          iframe.remove();
           return;
         }
         const { access_token, id_token } = msgEvent.data.response;
-        resolve({ access_token, id_token })
-        window.removeEventListener('message', eventListener);
+        resolve({ access_token, id_token });
+        window.removeEventListener('message', msgEventListener);
+        iframe.remove();
       });
     })
   }
