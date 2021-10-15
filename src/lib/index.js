@@ -53,8 +53,8 @@ class AuthingSSO {
       this.options.appDomain +
       '/cas/session'
     this.createSessionURL = (this.dev ? 'http://' : 'https://') +
-    this.options.appDomain +
-    '/cas/createSession'
+      this.options.appDomain +
+      '/cas/createSession'
     try {
       this.graphQLURL = this.options.host.oauth
     } catch (err) {
@@ -230,13 +230,55 @@ class AuthingSSO {
    * @description 用户手动创建 Session
    *
    */
-  async createSession(token){
+  async createSession(token) {
     const res = await axios.post(this.createSessionURL, {}, {
       headers: {
         token
       }
     })
     return res.data
+  }
+
+  /**
+   * @description 通过 iframe 请求 OIDC 的 Access Token 和 ID Token
+   */
+  async getAccessTokenSilently() {
+    if (!this.options.appDomain) {
+      throw new Error('请在初始化时传入 appDomain 参数，值为用户池域名');
+    }
+    if (!this.options.appId) {
+      throw new Error('请在初始化时传入 appId 参数，值为应用 ID');
+    }
+
+    if (!this.options.redirectUrl) {
+      throw new Error('请在初始化时传入 redirectUrl 参数，值为业务回调地址');
+    }
+
+    // 1. Create an iframe:
+    const iframe = document.createElement("iframe");
+    const stateString = Math.random().toString().slice(2).toString(16);
+    const nonceString = Math.random().toString().slice(2).toString(16);
+    const iframeSrcLink = `https://${this.options.appDomain}/oidc/auth?client_id=${this.options.appId}&redirect_uri=${this.options.redirectUrl}&response_type=id_token%20token&scope=openid+profile+email+phone&state=${stateString}&response_mode=web_message&nonce=${nonceString}&prompt=none`;
+    iframe.title = "postMessage() Initiator";
+    iframe.src = iframeSrcLink;
+    iframe.hidden = true;
+    document.body.append(iframe);
+
+    // 2. Handle the message event initiated by the iframe:
+    return new Promise((resolve, reject) => {
+      const msgEventListener = window.addEventListener("message", function (msgEvent) {
+        if (msgEvent.data.response.error) {
+          reject(new Error(msgEvent.data.response.error_description));
+          window.removeEventListener('message', msgEventListener);
+          iframe.remove();
+          return;
+        }
+        const { access_token, id_token } = msgEvent.data.response;
+        resolve({ access_token, id_token });
+        window.removeEventListener('message', msgEventListener);
+        iframe.remove();
+      });
+    })
   }
 
   /**
