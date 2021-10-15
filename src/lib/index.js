@@ -243,12 +243,22 @@ class AuthingSSO {
    * @description 通过 iframe 请求 OIDC 的 Access Token 和 ID Token
    */
   async getAccessTokenSilently() {
+    if (!this.options.appDomain) {
+      throw new Error('请在初始化时传入 appDomain 参数，值为用户池域名');
+    }
+    if (!this.options.appId) {
+      throw new Error('请在初始化时传入 appId 参数，值为应用 ID');
+    }
+
+    if (!this.options.redirectUrl) {
+      throw new Error('请在初始化时传入 redirectUrl 参数，值为业务回调地址');
+    }
+
     // 1. Create an iframe:
     const iframe = document.createElement("iframe");
-    const redirectURI = this.options.redirectUrl;
     const stateString = Math.random().toString().slice(2).toString(16);
     const nonceString = Math.random().toString().slice(2).toString(16);
-    const iframeSrcLink = `https://rx4tii-demo.authing.cn/oidc/auth?client_id=${this.options.appId}&redirect_uri=${redirectURI}&response_type=id_token%20token&scope=openid+profile+email+phone&state=${stateString}&response_mode=web_message&nonce=${nonceString}&prompt=none`;
+    const iframeSrcLink = `https://${this.options.appDomain}/oidc/auth?client_id=${this.options.appId}&redirect_uri=${this.options.redirectUrl}&response_type=id_token%20token&scope=openid+profile+email+phone&state=${stateString}&response_mode=web_message&nonce=${nonceString}&prompt=none`;
     iframe.title = "postMessage() Initiator";
     iframe.src = iframeSrcLink;
     iframe.hidden = true;
