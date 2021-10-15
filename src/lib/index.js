@@ -53,8 +53,8 @@ class AuthingSSO {
       this.options.appDomain +
       '/cas/session'
     this.createSessionURL = (this.dev ? 'http://' : 'https://') +
-    this.options.appDomain +
-    '/cas/createSession'
+      this.options.appDomain +
+      '/cas/createSession'
     try {
       this.graphQLURL = this.options.host.oauth
     } catch (err) {
@@ -230,13 +230,34 @@ class AuthingSSO {
    * @description 用户手动创建 Session
    *
    */
-  async createSession(token){
+  async createSession(token) {
     const res = await axios.post(this.createSessionURL, {}, {
       headers: {
         token
       }
     })
     return res.data
+  }
+
+  /**
+   * @description 通过 iframe 请求 OIDC 的 Access Token 和 ID Token
+   */
+  async getAccessTokenSilently() {
+    console.log("getAccessTokenSilently() is called.");
+    // 1. Create an iframe:
+    const iframe = document.createElement("iframe");
+    const redirectURI = "http%3A%2F%2Flocalhost%3A3000"; // Note: Use http://localhost:3000 for demo only!
+    const iframeSrcLink = `https://rx4tii-demo.authing.cn/oidc/auth?client_id=${this.options.appId}&redirect_uri=${redirectURI}&response_type=id_token%20token&scope=openid+profile+email+phone&state=q6cwgxns5t9&response_mode=web_message&nonce=123245&prompt=none`;
+    iframe.title = "postMessage() Initiator";
+    iframe.src = iframeSrcLink;
+    iframe.hidden = true;
+    document.body.append(iframe);
+    // 2. Handle the message event initiated by the iframe:
+    window.addEventListener("message", function (msgEvent) {
+      const { access_token, id_token } = msgEvent.data.response; // msgEvent.data contains the payload.
+      console.log("access_token:", access_token);
+      console.log("id_token:", id_token);
+    });
   }
 
   /**
