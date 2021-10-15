@@ -10,7 +10,7 @@
   },
   "main": "dist/AuthingSSO.umd.min.js",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "core-js": "^2.6.5",
     "url-polyfill": "^1.1.12",
     "vue": "^2.6.10"
