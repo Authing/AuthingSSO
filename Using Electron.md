@@ -27,8 +27,10 @@ win = new BrowserWindow({
 window.addEventListener(
   'message',
   event => {
-    if (typeof event?.data?.code === 'number' && event?.data?.data?.token) {
-      window.postMessage(event.data, '*');
+    if (typeof event?.data?.code === 'number' && event?.data?.data?.token && event?.data.from !== 'preload') {
+      // This message will be catch by this handler again, so we add a 'from' to indicate that it is re-send by ourself
+      // we re-send this, so authing in this window can catch it
+      window.postMessage({ ...event.data, from: 'preload' }, '*');
     }
   },
   false,
