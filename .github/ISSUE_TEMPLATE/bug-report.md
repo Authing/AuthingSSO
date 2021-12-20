@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: For reporting bugs or errors in the Authing UI Component
+about: For reporting bugs or errors in the Authing SSO
 title: 'Issue: Open an issue'
 labels: bug
 assignees: liaochangjiang, yelexin, zhaoyiming0803
