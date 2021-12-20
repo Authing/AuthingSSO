@@ -1,0 +1,50 @@
+{
+  "name": "@authing/sso",
+  "version": "2.1.2",
+  "description": "Authing SSO SDK 为开发者提供了简单易用的函数来实现 Web 端的单点登录效果，你可以通过调用 SDK 与 Authing 完成集成，为你的多个业务软件实现浏览器内的单点登录效果。",
+  "main": "build/umd",
+  "typings": "build/types",
+  "module": "build/module",
+  "scripts": {
+    "test": "jest",
+    "build:umd": "webpack",
+    "build:module": "tsc -p tsconfig.module.json",
+    "build": "yarn clean && yarn build:umd && yarn build:module",
+    "clean": "rm -rf build",
+    "publish-alpha": "npm publish --tag alpha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.authing.co:sdk/authing-sso.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-arrow-functions": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.4",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-typescript": "^7.16.0",
+    "@types/jest": "^27.0.2",
+    "babel-loader": "^8.2.3",
+    "jest": "^27.2.5",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.4.0",
+    "typescript": "^3.0.1",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.16.3",
+    "add": "^2.0.6",
+    "axios": "^0.24.0",
+    "core-js": "3",
+    "url-polyfill": "^1.1.12",
+    "yarn": "^1.22.17"
+  }
+}
