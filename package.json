@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@git.authing.co:sdk/authing-sso.git"
+    "url": "https://github.com/Authing/AuthingSSO.git"
   },
   "publishConfig": {
     "access": "public",
