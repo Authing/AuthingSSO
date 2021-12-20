@@ -22,7 +22,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "keywords": [],
-  "author": "",
+  "author": "https://github.com/authing",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.16.0",
