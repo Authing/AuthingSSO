@@ -18,10 +18,14 @@ jobs:
       with:
         node-version: 12
         registry-url: https://registry.npmjs.org/
+    - run: echo "Hello $FIRST_NAME $middle_name $Last_Name, today is Monday!"
+    - env:
+        accessKeyId: ${{ secrets.ACCESSKEYID }}
+        accessKeySecret: ${{ secrets.ACCESSKEYSECRET }}
     - run: |
         npm install yarn -g
         yarn
         yarn test
         yarn clean
         yarn build
-        yarn oss accessKeyId=${{ secrets.ACCESSKEYID }} accessKeySecret=${{ secrets.ACCESSKEYSECRET }}
+        yarn oss accessKeyId=$accessKeyId accessKeySecret=$accessKeySecret
