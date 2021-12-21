@@ -24,4 +24,4 @@ jobs:
         yarn test
         yarn clean
         yarn build
-        yarn oss accessKeyId=${{secrets.accessKeyId}} accessKeySecret=${{accessKeySecret}}
+        yarn oss accessKeyId=${{secrets.ACCESSKEYID}} accessKeySecret=${{ACCESSKEYSECRET}}
