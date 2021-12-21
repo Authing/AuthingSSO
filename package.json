@@ -11,7 +11,8 @@
     "build:module": "tsc -p tsconfig.module.json",
     "build": "yarn clean && yarn build:umd && yarn build:module",
     "clean": "rm -rf build",
-    "publish-alpha": "npm publish --tag alpha"
+    "publish-alpha": "npm publish --tag alpha",
+    "oss": "node scripts/oss.js"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-typescript": "^7.16.0",
     "@types/jest": "^27.0.3",
+    "ali-oss": "^6.16.0",
     "babel-loader": "^8.2.3",
     "babel-plugin-add-module-exports": "1.0.4",
     "jest": "^27.2.5",
