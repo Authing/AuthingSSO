@@ -26,5 +26,5 @@ jobs:
         yarn build
         yarn oss accessKeyId=$accessKeyId accessKeySecret=$accessKeySecret
       env:
-        accessKeyId: ${{ secrets.ACCESSKEYID }}
-        accessKeySecret: ${{ secrets.ACCESSKEYSECRET }}
+        accessKeyId: ${{ secrets.accessKeyId }}
+        accessKeySecret: ${{ secrets.accessKeySecret }}
