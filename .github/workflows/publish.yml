@@ -23,7 +23,7 @@ jobs:
         yarn test
         yarn clean
         yarn build
-        npm publish
+        npm publish --access public
         yarn oss accessKeyId=$OSS_KEY_ID accessKeySecret=$OSS_KEY_SECRET
       env:
         OSS_KEY_ID: ${{ secrets.OSS_KEY_ID }}
