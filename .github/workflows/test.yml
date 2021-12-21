@@ -1,4 +1,4 @@
-name: Authing Test CI
+name: Authing SSO Test CI
 
 on: [push, pull_request]
 
