@@ -18,7 +18,6 @@ jobs:
       with:
         node-version: 12
         registry-url: https://registry.npmjs.org/
-    - run: echo "Hello $FIRST_NAME $middle_name $Last_Name, today is Monday!"
     - env:
         accessKeyId: ${{ secrets.ACCESSKEYID }}
         accessKeySecret: ${{ secrets.ACCESSKEYSECRET }}
