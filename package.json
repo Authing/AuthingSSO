@@ -12,6 +12,7 @@
     "build": "yarn clean && yarn build:umd && yarn build:module",
     "clean": "rm -rf build",
     "publish-alpha": "npm publish --tag alpha",
+    "publish": "npm publish",
     "oss": "node scripts/oss.js"
   },
   "repository": {
