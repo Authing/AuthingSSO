@@ -18,9 +18,6 @@ jobs:
       with:
         node-version: 12
         registry-url: https://registry.npmjs.org/
-    - env:
-        accessKeyId: ${{ secrets.ACCESSKEYID }}
-        accessKeySecret: ${{ secrets.ACCESSKEYSECRET }}
     - run: |
         npm install yarn -g
         yarn
@@ -28,3 +25,6 @@ jobs:
         yarn clean
         yarn build
         yarn oss accessKeyId=$accessKeyId accessKeySecret=$accessKeySecret
+      env:
+        accessKeyId: ${{ secrets.ACCESSKEYID }}
+        accessKeySecret: ${{ secrets.ACCESSKEYSECRET }}
