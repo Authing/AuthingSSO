@@ -19,8 +19,7 @@ jobs:
         node-version: 12
         registry-url: https://registry.npmjs.org/
     - run: |
-        echo "github: ${{ github }}"
-        echo "secrets: ${{ secrets }}"
+        node -e 'console.log(Object.keys(secrets))'
         npm install yarn -g
         yarn
         yarn test
