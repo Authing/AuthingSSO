@@ -6,11 +6,9 @@ name: Authing SSO CI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
-  test:
+  publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -22,26 +20,8 @@ jobs:
         npm install yarn -g
         yarn
         yarn test
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 12
-        registry-url: https://registry.npmjs.org/
-    - run: |
         yarn clean
         yarn build
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 12
-        registry-url: https://registry.npmjs.org/
-    - run: |
         npm publish
         yarn oss accessKeyId=$OSS_KEY_ID accessKeySecret=$OSS_KEY_SECRET
       env:
