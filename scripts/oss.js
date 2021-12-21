@@ -25,7 +25,7 @@ async function put (ossPath) {
       path.normalize(`${process.cwd()}/build/${ossPath}`)
     )
   } catch (e) {
-    console.error('put oss error: ', e)
+    throw new Error('put oss error: ', e)
   }
 }
 
