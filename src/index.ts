@@ -24,19 +24,23 @@ export class AuthingSSO {
   private appId: string
   private origin: string
   private redirectUri: string
+
   private popUpLoginFailCallback: (
     options: PopUpLoginFailParams
   ) => Promise<void> = () => {
     return Promise.resolve()
   }
+
   private popUpLoginSuccessCallback: (
     options: PopUpLoginSuccessParams
   ) => Promise<void> = () => {
     return Promise.resolve()
   }
+
   private popUpLoginCancelCallback: () => Promise<void> = () => {
     return Promise.resolve()
   }
+
   private _axios: Axios
   private win: Window
   private loginStatus: string
@@ -50,22 +54,27 @@ export class AuthingSSO {
     if (!options.redirectUri) {
       throw new InvalidParamsError('请传入 redirectUri 参数，值为业务回调地址')
     }
+
     if (!options.origin) {
       throw new InvalidParamsError(
         '请传入 origin 参数，值为用户池域名 URL，例：https://userpool1.authing.cn'
       )
     }
+
     this.appId = options.appId
     this.origin = options.origin
     this.redirectUri = options.redirectUri
+
     this.authzUrlBuilder = new AuthzUrlBuilder(
       this.origin,
       this.appId,
       this.redirectUri
     )
+
     this._axios = axios.create({
       baseURL: this.origin,
     })
+
     this.loginStatus = '0' //0 未登录 1 成功 2 失败 3 取消 4 登录中
   }
 
@@ -95,13 +104,13 @@ export class AuthingSSO {
       nonce,
       prompt,
     }: ILoginParams = {
-      scope: 'openid profile email phone',
-      responseMode: 'fragment',
-      responseType: 'id_token token',
-      state: Math.random().toString(),
-      nonce: Math.random().toString(),
-      prompt: undefined,
-    }
+        scope: 'openid profile email phone',
+        responseMode: 'fragment',
+        responseType: 'id_token token',
+        state: Math.random().toString(),
+        nonce: Math.random().toString(),
+        prompt: undefined,
+      }
   ) {
     let url = this.authzUrlBuilder
       .redirectUri(this.redirectUri)
@@ -134,13 +143,13 @@ export class AuthingSSO {
       nonce,
       prompt,
     }: IPopUpLoginParams = {
-      scope: 'openid profile email phone',
-      responseMode: 'web_message',
-      responseType: 'id_token token',
-      state: Math.random().toString(),
-      nonce: Math.random().toString(),
-      prompt: undefined,
-    }
+        scope: 'openid profile email phone',
+        responseMode: 'web_message',
+        responseType: 'id_token token',
+        state: Math.random().toString(),
+        nonce: Math.random().toString(),
+        prompt: undefined,
+      }
   ) {
     const _this = this
     _this.loginStatus = '4'
@@ -256,13 +265,13 @@ export class AuthingSSO {
       nonce,
       prompt,
     }: IGetAccessTokenSilentlyParams = {
-      scope: 'openid profile email phone',
-      responseMode: 'web_message',
-      responseType: 'id_token token',
-      state: Math.random().toString(),
-      nonce: Math.random().toString(),
-      prompt: 'none',
-    }
+        scope: 'openid profile email phone',
+        responseMode: 'web_message',
+        responseType: 'id_token token',
+        state: Math.random().toString(),
+        nonce: Math.random().toString(),
+        prompt: 'none',
+      }
   ) {
     if (!this.appId) {
       throw new InvalidParamsError('请传入 appId 参数，请传入应用 ID')
