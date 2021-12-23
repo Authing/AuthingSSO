@@ -8,8 +8,6 @@ const map = process.argv.slice(2).reduce((map, arg) => {
   return map
 }, {})
 
-console.log('map: ', map)
-
 const client = new OSS({
   region: 'oss-cn-beijing',
   accessKeyId: map.accessKeyId,
