@@ -2,7 +2,7 @@
 
 Authing SSO SDK 为开发者提供了简单易用的函数来实现 Web 端的单点登录效果，你可以通过调用 SDK 与 Authing 完成集成，为你的多个业务软件实现浏览器内的单点登录效果。
 
-# 配置 Authing 控制台
+## 配置 Authing 控制台
 
 登录控制台创建新的用户池或使用现存在的用户池，并创建对应的应用。如下图所示：
 
@@ -21,7 +21,7 @@ Authing SSO SDK 为开发者提供了简单易用的函数来实现 Web 端的�
 
 ![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_5.png)
 
-# 安装
+## 安装
 
 Authing SSO SDK 支持通过包管理器安装、script 标签引入的方式集成到你的前端业务软件。
 
@@ -42,7 +42,7 @@ $ yarn add @authing/sso
 ```html
 示例：
 
-<script src="https://cdn.jsdelivr.net/npm/@authing/sso@2.1.0/build/umd/index.min.js"></script>
+<script src="https://cdn.authing.co/packages/authing-sso/2.1.2/umd/index.min.js"></script>
 
 <script>
   var authingSSO = new AuthingSSO.AuthingSSO({
@@ -53,17 +53,17 @@ $ yarn add @authing/sso
 </script>
 ```
 
-# 初始化
+## 初始化
 
-#### 应用 ID 如果所示：
+### 应用 ID 如果所示：
 
 ![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_3.png)
 
-#### 用户池域名，如图所示：
+### 用户池域名，如图所示：
 
 ![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_4.png)
 
-#### 回调地址，根据你自己的业务填写回调地址，如图所示：
+### 回调地址，根据你自己的业务填写回调地址，如图所示：
 
 ![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_6.png)
 
@@ -85,7 +85,7 @@ const authing = new AuthingSSO({
 import { AuthingSSO } from '@authing/sso/es5'
 ```
 
-# 注册
+## 注册
 
 如果你希望为用户展示 Authing 托管的注册页，可以按以下方式调用：
 
@@ -101,14 +101,14 @@ const authing = new AuthingSSO({
 authing.register()
 ```
 
-# 登录
+## 登录
 
 Authing SSO SDK 可以向 Authing 发起认证授权请求，目前支持两种形式：
 
 1. 在当前窗口转到 Authing 托管的登录页；
 2. 弹出一个窗口，在弹出的窗口中加载 Authing 托管的登录页。
 
-## 跳转登录
+### 跳转登录
 
 运行下面的代码，浏览器会跳转到 Authing 托管的登录页：
 
@@ -155,7 +155,7 @@ const { access_token, id_token } = authing.getTokenSetFromUrlHash()
 const userInfo = await authing.getUserInfoByAccessToken(access_token)
 ```
 
-## 弹出窗口登录
+### 弹出窗口登录
 
 你可以在你的业务软件页面调用下面的方法，通过弹出一个新窗口的方式让用户在新窗口登录：
 
@@ -186,6 +186,20 @@ authing.onPopUpLoginCancel(async () => {
 })
 ```
 
+## 退出登录
+
+```js
+import { AuthingSSO, AuthenticationError } from '@authing/sso'
+
+const authing = new AuthingSSO({
+  appId: '应用 ID',
+  origin: 'https://{用户池域名}.authing.cn',
+  redirectUri: '你的业务软件路由地址',
+})
+
+await authing.logout()
+// 需要业务软件清除本地保存的所有 token 和用户信息
+```
 ## 高级使用
 
 每次发起登录本质是访问一个 URL 地址，可以携带许多参数。AuthingSSO SDK 默认会使用缺省参数。如果你需要精细控制登录请求参数，可以参考本示例。
@@ -220,7 +234,7 @@ authing.popUpLogin({
 
 更多参数请参考[文档](https://docs.authing.cn/v2/federation/oidc/authorization-code/?build-url=curl)。
 
-# 检查登录态并获取 Token
+### 检查登录态并获取 Token
 
 如果你想检查用户的登录态，并获取用户的 Access Token、Id Token，可以按以下方式调用，如果用户没有在 Authing 登录，该方法会抛出错误：
 
@@ -257,7 +271,7 @@ async function main() {
 main()
 ```
 
-# 获取用户信息
+### 获取用户信息
 
 你需要使用 Access Token 获取用户的个人信息：
 
@@ -296,22 +310,6 @@ async function main() {
 }
 main()
 ```
-
-# 退出登录
-
-```js
-import { AuthingSSO, AuthenticationError } from '@authing/sso'
-
-const authing = new AuthingSSO({
-  appId: '应用 ID',
-  origin: 'https://{用户池域名}.authing.cn',
-  redirectUri: '你的业务软件路由地址',
-})
-
-await authing.logout()
-// 需要业务软件清除本地保存的所有 token 和用户信息
-```
-
 ### trackSession
 
 跨域携带 cookie 访问 /cas/session 端点，获取当前登录的用户信息
@@ -343,3 +341,7 @@ let res = await auth.trackSession()
  * }
  * */
 ```
+
+## 获取帮助
+
+Join us on Gitter: [#authing-chat](https://forum.authing.cn/)
