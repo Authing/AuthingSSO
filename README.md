@@ -1,6 +1,6 @@
 # Authing SSO SDK
 
-<div align=center><img src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg"></div>
+<div align=center><img width="300" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg"></div>
 
 <div align="center">
   <a href="https://badge.fury.io/js/@authing%2Fsso"><img src="https://badge.fury.io/js/@authing%2Fsso.svg" alt="npm version" height="18"></a>
