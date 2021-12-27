@@ -361,4 +361,4 @@ let res = await auth.trackSession()
 - Create new Pull Request
 ## 获取帮助
 
-Join us on Gitter: [#authing-chat](https://forum.authing.cn/)
+Join us on forum: [#authing-chat](https://forum.authing.cn/)
