@@ -1,36 +1,22 @@
 # Authing SSO SDK
 
+<div align=center><img src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg"></div>
+
+<div align="center">
+  <a href="https://www.npmjs.com/package/@authing/sso"><img src="https://badge.fury.io/js/stateview.svg" alt="npm version" height="18"></a>
+  <a href="https://npmcharts.com/compare/@authing/sso" target="_blank"><img src="https://img.shields.io/npm/dm/@authing/sso" alt="download"></a>
+  <a href="https://standardjs.com" target="_blank"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="standardjs"></a>
+  <a href="https://github.com/Authing/AuthingSSO" target="_blank"><img src="https://img.shields.io/npm/l/vue.svg" alt="License"></a>
+  <a href="javascript:;" target="_blank"><img src="https://img.shields.io/badge/node-%3E=12-green.svg" alt="Node"></a>
+</div>
+<br/>
+
 Authing SSO SDK 为开发者提供了简单易用的函数来实现 Web 端的单点登录效果，你可以通过调用 SDK 与 Authing 完成集成，为你的多个业务软件实现浏览器内的单点登录效果。
-
-## 配置 Authing 控制台
-
-登录控制台创建新的用户池或使用现存在的用户池，并创建对应的应用。如下图所示：
-
-![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_1.png)
-
-- 进入应用找到认证配置，配置登录回调 URL 并进行保存
-- 授权配置中，授权模式开启 implicit
-- 授权配置中，返回类型开启 ( id_token token，id_token )
-- 授权配置中，不强制 implicit 模式回调链接为 https 进行开启
-- 点击保存进行保存配置
-- 打开 SSO 单点登录
-
-如下图所示：
-
-![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_2.png)
-
-![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_5.png)
-
-## 安装
-
-Authing SSO SDK 支持通过包管理器安装、script 标签引入的方式集成到你的前端业务软件。
-
 ## 使用 NPM 安装
 
 ```shell
 $ npm install @authing/sso
 ```
-
 ## 使用 Yarn 安装
 
 ```shell
@@ -52,6 +38,24 @@ $ yarn add @authing/sso
   })
 </script>
 ```
+## 配置 Authing 控制台
+
+登录控制台创建新的用户池或使用现存在的用户池，并创建对应的应用。如下图所示：
+
+![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_1.png)
+
+- 进入应用找到认证配置，配置登录回调 URL 并进行保存
+- 授权配置中，授权模式开启 implicit
+- 授权配置中，返回类型开启 ( id_token token，id_token )
+- 授权配置中，不强制 implicit 模式回调链接为 https 进行开启
+- 点击保存进行保存配置
+- 打开 SSO 单点登录
+
+如下图所示：
+
+![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_2.png)
+
+![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_5.png)
 
 ## 初始化
 
@@ -342,6 +346,19 @@ let res = await auth.trackSession()
  * */
 ```
 
+## 测试 Demo
+
+[Demo](https://github.com/Authing/authing-sso-demo) 提供 Authing SSO 使用示例。
+
+## 更新日志
+
+[文档](https://github.com/Authing/AuthingSSO/releases)中记录了每个版本的详细更改。
+## 参与贡献
+- Fork it
+- Create your feature branch (git checkout -b my-new-feature)
+- Commit your changes (git commit -am 'Add some feature')
+- Push to the branch (git push origin my-new-feature)
+- Create new Pull Request
 ## 获取帮助
 
 Join us on Gitter: [#authing-chat](https://forum.authing.cn/)
