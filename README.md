@@ -3,7 +3,7 @@
 <div align=center><img src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg"></div>
 
 <div align="center">
-  <a href="https://www.npmjs.com/package/@authing/sso"><img src="https://badge.fury.io/js/stateview.svg" alt="npm version" height="18"></a>
+  <a href="https://badge.fury.io/js/@authing%2Fsso"><img src="https://badge.fury.io/js/@authing%2Fsso.svg" alt="npm version" height="18"></a>
   <a href="https://npmcharts.com/compare/@authing/sso" target="_blank"><img src="https://img.shields.io/npm/dm/@authing/sso" alt="download"></a>
   <a href="https://standardjs.com" target="_blank"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="standardjs"></a>
   <a href="https://github.com/Authing/AuthingSSO" target="_blank"><img src="https://img.shields.io/npm/l/vue.svg" alt="License"></a>
