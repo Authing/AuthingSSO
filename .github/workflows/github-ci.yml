@@ -58,3 +58,23 @@ jobs:
           OSS_KEY_ID: ${{ secrets.OSS_KEY_ID }}
           OSS_KEY_SECRET: ${{ secrets.OSS_KEY_SECRET }}
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+      
+      - name: set-git-config
+        if: ${{ github.ref_name == 'master' }}
+        run: |
+          git config --global user.email ${{ github.event.inputs.email }}
+          git config --global user.name ${{ github.event.inputs.name }}
+    
+      - name: release
+        if: ${{ github.ref_name == 'master' }}
+        uses: actions/github-script@v3
+        with:
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ env.VERESION }}",
+              sha: context.sha
+            })
+        env:
+          VERESION: ${{ steps.version.outputs.value }}
