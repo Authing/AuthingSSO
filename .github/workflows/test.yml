@@ -19,7 +19,7 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
           
-      - name: run teset
+      - name: run test
         run: |
           npm install yarn -g
           yarn
