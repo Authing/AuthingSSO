@@ -101,7 +101,7 @@ export class AuthzUrlBuilder {
     return this
   }
 
-  prompt(params?: IPromptType) {
+  prompt(params: IPromptType) {
     this._prompt = params
     return this
   }
