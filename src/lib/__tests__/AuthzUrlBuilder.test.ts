@@ -38,24 +38,25 @@ describe('Test AuthzUrlBuilder', () => {
     expect(() => authzUrlBuilder.responseType('id_token tokencode')).toThrow()
     
     expect(authzUrlBuilder.clientId(global.__appId__)).toBeInstanceOf(AuthzUrlBuilder)
-    expect(authzUrlBuilder.prompt()).toBeInstanceOf(AuthzUrlBuilder)
+    expect(authzUrlBuilder.prompt('consent')).toBeInstanceOf(AuthzUrlBuilder)
     expect(authzUrlBuilder.state(Math.random().toString())).toBeInstanceOf(AuthzUrlBuilder)
     expect(authzUrlBuilder.nonce(Math.random().toString())).toBeInstanceOf(AuthzUrlBuilder)
   })
 
-  test('Build function to be called successfully', () => {
+  test('build function to be called successfully', () => {
     const stateStr = Math.random().toString()
     const nonceStr = Math.random().toString()
     const scopeStr = 'openid phone'
     const responseModeStr = 'fragment'
     const responseTypeStr = 'token id_token'
+    const promptStr = 'login'
     const urls = authzUrlBuilder
       .redirectUri(global.__redirectUri__)
       .scope(scopeStr)
       .responseMode(responseModeStr)
       .responseType(responseTypeStr)
       .clientId(global.__appId__)
-      .prompt()
+      .prompt(promptStr)
       .state(stateStr)
       .nonce(nonceStr)
       .build()
@@ -68,6 +69,7 @@ describe('Test AuthzUrlBuilder', () => {
       `&response_mode=${responseModeStr}`+
       `&response_type=${responseTypeStr.split(' ').filter(item => !!item).sort().join('+')}`+
       `&client_id=${global.__appId__}`+
+      `&prompt=${promptStr}`+
       `&state=${stateStr}`+
       `&nonce=${nonceStr}`
     )
