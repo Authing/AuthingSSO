@@ -234,7 +234,7 @@ export class AuthingSSO {
    * @param  access_token: string
    */
   async getUserInfoByAccessToken(access_token: string) {
-    if (!access_token && typeof access_token !== 'string') {
+    if (!access_token || typeof access_token !== 'string') {
       throw new InvalidParamsError('请传入正确的 access_token')
     }
 
