@@ -59,7 +59,7 @@ jobs:
           VERESION: ${{ github.event.inputs.version }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       
-      - name: upload-oss
+      - name: upload oss
         if: ${{ github.ref_name == 'master' }}
         run: |
           yarn oss accessKeyId=$OSS_KEY_ID accessKeySecret=$OSS_KEY_SECRET
