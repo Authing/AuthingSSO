@@ -24,6 +24,7 @@ jobs:
 
     env: 
       PUBLISH_OPTS: ${{ github.ref_name == 'master' && '--verbose' || '--verbose --tag=alpha' }}
+      VERESION: ${{ github.event.inputs.version }}
       
     steps:
 
@@ -56,7 +57,6 @@ jobs:
           npm version $VERESION
           npm publish $PUBLISH_OPTS
         env:
-          VERESION: ${{ github.event.inputs.version }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       
       - name: upload oss
@@ -78,5 +78,3 @@ jobs:
               ref: "refs/tags/${{ env.VERESION }}",
               sha: context.sha
             })
-        env:
-          VERESION: ${{ github.event.inputs.version }}
