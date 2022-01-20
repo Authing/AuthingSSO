@@ -40,6 +40,11 @@ jobs:
           echo "Current user.name: ${{ github.event.inputs.name }}"
           echo "Current user.email: ${{ github.event.inputs.email }}"
           
+      - name: set git config
+        run: |
+          git config --global user.email ${{ github.event.inputs.email }}
+          git config --global user.name ${{ github.event.inputs.name }}
+
       - name: publish
         run: |
           npm install yarn -g
@@ -62,11 +67,6 @@ jobs:
           OSS_KEY_ID: ${{ secrets.OSS_KEY_ID }}
           OSS_KEY_SECRET: ${{ secrets.OSS_KEY_SECRET }}
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
-      
-      - name: set-git-config
-        run: |
-          git config --global user.email ${{ github.event.inputs.email }}
-          git config --global user.name ${{ github.event.inputs.name }}
     
       - name: release
         uses: actions/github-script@v3
