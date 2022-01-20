@@ -1,6 +1,6 @@
 
 import { InvalidParamsError } from '../errors/InvalidParamsError'
-
+import { IPromptType } from '../interfaces/IAuthingSSOConstructorParams'
 export class AuthzUrlBuilder {
 
   private _clientId: string
@@ -32,15 +32,19 @@ export class AuthzUrlBuilder {
     let urls = new URL(this._origin)
 
     urls.pathname = '/oidc/auth'
+
     urls.searchParams.append('redirect_uri', this._redirectUri)
     urls.searchParams.append('scope', this._scope)
     urls.searchParams.append('response_mode', this._responseMode)
     urls.searchParams.append('response_type', this._responseType)
     urls.searchParams.append('client_id', this._clientId)
+
     if (this._prompt) {
       urls.searchParams.append('prompt', this._prompt)
     }
+
     urls.searchParams.append('state', this._state)
+
     if (this._nonce) {
       urls.searchParams.append('nonce', this._nonce)
     }
@@ -54,15 +58,24 @@ export class AuthzUrlBuilder {
   }
 
   scope(params: string) {
-    if (params && params.includes('offline_access')) {
+    const openidRequiredMessage = 'AuthingSSO error: scope 必须传递 openid'
+
+    if (!params) {
+      throw new InvalidParamsError(openidRequiredMessage)
+    }
+
+    const _params: string[] = params.split(' ').filter(item => !!item)
+
+    if (_params.includes('offline_access')) {
       this._prompt = 'consent'
     }
-    if (params && params.includes('openid')) {
-      this._scope = params
+
+    if (_params.includes('openid')) {
+      this._scope = _params.join(' ')
       return this
-    } else {
-      throw new InvalidParamsError('scope 必须传递 openid')
     }
+
+    throw new InvalidParamsError(openidRequiredMessage)
   }
 
   responseMode(params: string) {
@@ -71,7 +84,15 @@ export class AuthzUrlBuilder {
   }
 
   responseType(params: string) {
-    this._responseType = params
+    const responseTypeList = ['id_token', 'token', 'code']
+    const _params = params.split(' ').filter(item => !!item)
+
+    if (!responseTypeList.sort().join('').includes(_params.sort().join(''))) {
+      throw new InvalidParamsError(`AuthingSSO error: responseType 必须是以空格分割 ${responseTypeList.join('、')} 的一个或多个`)
+    }
+
+    this._responseType = _params.join(' ')
+
     return this
   }
 
@@ -80,7 +101,7 @@ export class AuthzUrlBuilder {
     return this
   }
 
-  prompt(params: string) {
+  prompt(params: IPromptType) {
     this._prompt = params
     return this
   }

@@ -234,7 +234,7 @@ export class AuthingSSO {
    * @param  access_token: string
    */
   async getUserInfoByAccessToken(access_token: string) {
-    if (!access_token && typeof access_token !== 'string') {
+    if (!access_token || typeof access_token !== 'string') {
       throw new InvalidParamsError('请传入正确的 access_token')
     }
 
@@ -273,20 +273,6 @@ export class AuthingSSO {
         prompt: 'none',
       }
   ) {
-    if (!this.appId) {
-      throw new InvalidParamsError('请传入 appId 参数，请传入应用 ID')
-    }
-
-    if (!this.redirectUri) {
-      throw new InvalidParamsError('请传入 redirectUri 参数，值为业务回调地址')
-    }
-
-    if (!this.origin) {
-      throw new InvalidParamsError(
-        '请传入 origin 参数，值为用户池域名 URL，例：https://userpool1.authing.cn'
-      )
-    }
-
     let url = this.authzUrlBuilder
       .redirectUri(this.redirectUri)
       .scope(scope)

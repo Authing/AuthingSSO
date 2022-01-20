@@ -18,7 +18,8 @@
     "typeRoots": ["./node_modules/@types"],
     "lib": ["dom", "es2015"],
     "jsx": "react",
-    "allowJs": false
+    "allowJs": false,
+    "esModuleInterop": true
   },
   "include": ["src/**/*.ts"], // 要打包的文件
   "exclude": ["node_modules"]

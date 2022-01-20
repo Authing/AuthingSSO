@@ -51,13 +51,18 @@ export interface emptyObjParams {
   code?: string;
   state?: string;
 }
+
+// 定义交互方式：
+export type IPromptType = 'none' // 永远不提示用户做任何登录，无需输密码
+  | 'consent' // 每次用户认证完后都要进行二次确认
+  | 'login' // 默认值
 export interface IPopUpLoginParams {
   scope?: string;
   responseMode?: string;
   responseType?: string;
   nonce?: string;
   state?: string;
-  prompt: 'none' | 'consent'
+  prompt: IPromptType
 }
 
 export interface IGetAccessTokenSilentlyParams extends IPopUpLoginParams{}
