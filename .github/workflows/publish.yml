@@ -33,6 +33,13 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
           
+      - name: before scripts
+        run: |
+          echo "Current branch: ${{ github.ref_name }}"
+          echo "Current publish version: ${{ github.event.inputs.version }}"
+          echo "Current user.name: ${{ github.event.inputs.name }}"
+          echo "Current user.email: ${{ github.event.inputs.email }}"
+          
       - name: publish
         run: |
           npm install yarn -g
