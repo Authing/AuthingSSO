@@ -124,3 +124,5 @@ tsconfig.json
 tsconfig.module.json
 jest.module.json
 src
+
+package-lock.json
