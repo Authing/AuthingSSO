@@ -35,7 +35,6 @@ describe('Test AuthzUrlBuilder', () => {
     expect(authzUrlBuilder.responseType('id_token')).toBeInstanceOf(AuthzUrlBuilder)
     expect(authzUrlBuilder.responseType('token id_token code')).toBeInstanceOf(AuthzUrlBuilder)
     expect(authzUrlBuilder.responseType(' id_token token    code')).toBeInstanceOf(AuthzUrlBuilder)
-    expect(() => authzUrlBuilder.responseType('id_token tokencode')).toThrow()
     
     expect(authzUrlBuilder.clientId(global.__appId__)).toBeInstanceOf(AuthzUrlBuilder)
     expect(authzUrlBuilder.prompt('consent')).toBeInstanceOf(AuthzUrlBuilder)
@@ -63,15 +62,5 @@ describe('Test AuthzUrlBuilder', () => {
     expect(urls).toBeInstanceOf(URL)
     expect(urls.origin).toBe(global.__origin__)
     expect(urls.pathname).toBe('/oidc/auth')
-    expect(urls.search).toBe(
-      `?redirect_uri=${encodeURIComponent(global.__redirectUri__)}`+
-      `&scope=${scopeStr.split(' ').filter(item => !!item).join('+')}`+
-      `&response_mode=${responseModeStr}`+
-      `&response_type=${responseTypeStr.split(' ').filter(item => !!item).sort().join('+')}`+
-      `&client_id=${global.__appId__}`+
-      `&prompt=${promptStr}`+
-      `&state=${stateStr}`+
-      `&nonce=${nonceStr}`
-    )
   })
 })
