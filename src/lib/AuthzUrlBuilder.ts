@@ -84,15 +84,7 @@ export class AuthzUrlBuilder {
   }
 
   responseType(params: string) {
-    const responseTypeList = ['id_token', 'token', 'code']
-    const _params = params.split(' ').filter(item => !!item)
-
-    if (!responseTypeList.sort().join('').includes(_params.sort().join(''))) {
-      throw new InvalidParamsError(`AuthingSSO error: responseType 必须是以空格分割 ${responseTypeList.join('、')} 的一个或多个`)
-    }
-
-    this._responseType = _params.join(' ')
-
+    this._responseType = params
     return this
   }
 
