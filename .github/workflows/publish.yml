@@ -48,7 +48,6 @@ jobs:
           npm publish $PUBLISH_OPTS --access public
       
       - name: upload oss
-        if: ${{ github.ref_name == 'master' }}
         run: |
           npm run oss accessKeyId=$OSS_KEY_ID accessKeySecret=$OSS_KEY_SECRET
         env:
