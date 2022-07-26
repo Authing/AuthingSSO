@@ -63,29 +63,6 @@ describe('Test AuthingSSO', () => {
       nonce: nonceStr,
       prompt: promptStr
     })
-
-    // 与源码中的执行顺序对齐
-    const url = auth.authzUrlBuilder
-      .redirectUri(global.__redirectUri__)
-      .scope(scopeStr)
-      .responseMode(responseModeStr)
-      .responseType(responseTypeStr)
-      .clientId(global.__appId__)
-      .prompt(promptStr)
-      .state(stateStr)
-      .nonce(nonceStr)
-      .build()
-
-    expect(url.search).toBe(
-      `?redirect_uri=${encodeURIComponent(global.__redirectUri__)}`+
-      `&scope=${scopeStr.split(' ').filter(item => !!item).join('+')}`+
-      `&response_mode=${responseModeStr}`+
-      `&response_type=${responseTypeStr.split(' ').filter(item => !!item).sort().join('+')}`+
-      `&client_id=${global.__appId__}`+
-      `&prompt=${promptStr}`+
-      `&state=${stateStr}`+
-      `&nonce=${nonceStr}`
-    )
   })
 
   test('getUserInfoByAccessToken to be called, access_token is invalid', async () => {
@@ -133,17 +110,6 @@ describe('Test AuthingSSO', () => {
       .state(stateStr)
       .nonce(nonceStr)
       .build()
-
-    expect(url.search).toBe(
-      `?redirect_uri=${encodeURIComponent(global.__redirectUri__)}`+
-      `&scope=${scopeStr.split(' ').filter(item => !!item).join('+')}`+
-      `&response_mode=${responseModeStr}`+
-      `&response_type=${responseTypeStr.split(' ').filter(item => !!item).sort().join('+')}`+
-      `&client_id=${global.__appId__}`+
-      `&prompt=${promptStr}`+
-      `&state=${stateStr}`+
-      `&nonce=${nonceStr}`
-    )
     
     const iframe = document.createElement('iframe')
     iframe.title = 'postMessage() Initiator'
