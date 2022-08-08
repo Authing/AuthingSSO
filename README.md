@@ -11,124 +11,123 @@
 </div>
 <br/>
 
-Authing SSO SDK 为开发者提供了简单易用的函数来实现 Web 端的单点登录效果，你可以通过调用 SDK 与 Authing 完成集成，为你的多个业务软件实现浏览器内的单点登录效果。
-## 使用 NPM 安装
+The Authing SSO SDK provides developers with simple and easy-to-use functions to achieve the SSO effect on the web side. You can integrate with Authing by calling the SDK to achieve the SSO effect in the browser for your multiple business software.
+## Install with NPM
 
 ```shell
 $ npm install @authing/sso
 ```
-## 使用 Yarn 安装
+## Install with Yarn
 
 ```shell
 $ yarn add @authing/sso
 ```
 
-## 使用 script 标签直接引入
+## Use script tag
 
 ```html
-示例：
-
 <script src="https://cdn.authing.co/packages/authing-sso/2.1.2/umd/index.min.js"></script>
-
 <script>
   var authingSSO = new AuthingSSO.AuthingSSO({
-    appId: '应用 ID',
-    origin: 'https://{用户池域名}.authing.cn',
-    redirectUri: '你的业务软件路由地址',
+    appId: 'App ID',
+    origin: 'https://{UserPool_Domain}.authing.cn',
+    redirectUri: 'Login Callback URL',
   })
 </script>
 ```
-## 配置 Authing 控制台
 
-登录控制台创建新的用户池或使用现存在的用户池，并创建对应的应用。如下图所示：
+## Configure the Authing console
+
+Log in to the console to create a new user pool or use an existing user pool and create the corresponding application. As shown below:
 
 ![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_1.png)
 
-- 进入应用找到认证配置，配置登录回调 URL 并进行保存
-- 授权配置中，授权模式开启 implicit
-- 授权配置中，返回类型开启 ( id_token token，id_token )
-- 授权配置中，不强制 implicit 模式回调链接为 https 进行开启
-- 点击保存进行保存配置
-- 打开 SSO 单点登录
+- Enter the app to find the authentication configuration, configure the login callback URL and save it
+- In the authorization configuration, the authorization mode is enabled with `implicit`
+- In the authorization configuration, the return type is enabled `id_token token` and `id_token`
+- In the authorization configuration, the implicit mode callback link is not forced to be enabled by https
+- Click Save to save the configuration
+- Turn on SSO single sign-on
 
-如下图所示：
 
 ![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_2.png)
 
 ![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_5.png)
 
-## 初始化
 
-### 应用 ID 如果所示：
+## Initialize
+
+### Application ID:
 
 ![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_3.png)
 
-### 用户池域名，如图所示：
+### UserPool domain:
 
 ![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_4.png)
 
-### 回调地址，根据你自己的业务填写回调地址，如图所示：
+### Callback URL, fill in the callback url according to your own business:
 
 ![](https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-sso-sdk-pictures/README_6.png)
 
-为了使用 Authing SSO SDK，你需要填写应用 ID、用户池域名、回调地址等参数，如下示例：
+
+In order to use the Authing SSO SDK, you need to fill in the `App ID`, `UserPool domain`, `callback url` and other parameters, as shown in the following example:
 
 ```js
 import { AuthingSSO } from '@authing/sso'
 
 const authing = new AuthingSSO({
-  appId: '应用 ID',
-  origin: 'https://{用户池域名}.authing.cn',
-  redirectUri: '你的业务软件路由地址',
+  appId: 'App ID',
+  origin: 'https://{UserPool_Domain}.authing.cn',
+  redirectUri: 'Login Callback URL',
 })
 ```
 
-如果你想兼容低版本浏览器，也可以
+If you want to be compatible with lower version browsers, you can also
 
 ```js
 import { AuthingSSO } from '@authing/sso/es5'
 ```
 
-## 注册
+## register
 
-如果你希望为用户展示 Authing 托管的注册页，可以按以下方式调用：
+If you wish to present the Authing-hosted registration page to the user, you can call it as follows:
 
 ```js
 import { AuthingSSO } from '@authing/sso'
 
 const authing = new AuthingSSO({
-  appId: '应用 ID',
-  origin: 'https://{用户池域名}.authing.cn',
-  redirectUri: '你的业务软件路由地址',
+  appId: 'App ID',
+  origin: 'https://{UserPool_Domain}.authing.cn',
+  redirectUri: 'Login Callback URL',
 })
 
 authing.register()
 ```
 
-## 登录
+## Log in
 
-Authing SSO SDK 可以向 Authing 发起认证授权请求，目前支持两种形式：
+The Authing SSO SDK can initiate authentication and authorization requests to Authing. Currently, two forms are supported:
 
-1. 在当前窗口转到 Authing 托管的登录页；
-2. 弹出一个窗口，在弹出的窗口中加载 Authing 托管的登录页。
+1. Go to the login page hosted by Authing in the current window;
+2. A window pops up and loads the login page hosted by Authing in the pop-up window.
 
-### 跳转登录
+### Redirect login
 
-运行下面的代码，浏览器会跳转到 Authing 托管的登录页：
+Running the following code will redirect the browser to the login page hosted by Authing:
 
 ```js
 import { AuthingSSO } from '@authing/sso'
 
 const authing = new AuthingSSO({
-  appId: '应用 ID',
-  origin: 'https://{用户池域名}.authing.cn',
-  redirectUri: '你的业务软件路由地址',
+  appId: 'App ID',
+  origin: 'https://{UserPool_Domain}.authing.cn',
+  redirectUri: 'Login Callback URL',
 })
 
 authing.login()
 ```
 
-如果你想自定义参数，也可以对以下参数进行自定义传参，如不传参将使用默认参数
+If you want to customize the parameters, you can also customize the following parameters. If you do not pass the parameters, the default parameters will be used
 
 ```js
 authing.login({
@@ -140,84 +139,84 @@ authing.login({
 })
 ```
 
-用户完成登录后，Authing 会将用户重定向到你的业务软件回调地址。 Id Token、Access Token 会以 URL hash 的形式发到回调地址。你可以在你的业务软件前端路由对应的页面使用 Authing SSO SDK 的方法将它们从 URL hash 中取出：
+After the user completes the login, Authing will redirect the user to your business software callback address. Id Token and Access Token will be sent to the callback address in the form of URL hash. You can use the Authing SSO SDK method to extract them from the URL hash on the corresponding page of your business software front-end route:
 
 ```js
 import { AuthingSSO } from '@authing/sso'
 
 const authing = new AuthingSSO({
-  appId: '应用 ID',
-  origin: 'https://{用户池域名}.authing.cn',
-  redirectUri: '你的业务软件路由地址',
+  appId: 'App ID',
+  origin: 'https://{UserPool_Domain}.authing.cn',
+  redirectUri: 'Login Callback URL',
 })
 
 // authing.cn/#id_token=123123&access_token=547567
-// 返回 { id_token: 123123, access_token: 547567 }
+// return { id_token: 123123, access_token: 547567 }
 const { access_token, id_token } = authing.getTokenSetFromUrlHash()
 
-// 之后可以使用 Access Token 获取用户信息
+// You can then use the Access Token to get user information
 const userInfo = await authing.getUserInfoByAccessToken(access_token)
 ```
 
-### 弹出窗口登录
+### Popup login
 
-你可以在你的业务软件页面调用下面的方法，通过弹出一个新窗口的方式让用户在新窗口登录：
+You can call the following method on your business software page to allow users to log in in a new window by popping up a new window:
 
 ```js
 import { AuthingSSO } from '@authing/sso'
 
 const authing = new AuthingSSO({
-  appId: '应用 ID',
-  origin: 'https://{用户池域名}.authing.cn',
-  redirectUri: '你的业务软件路由地址',
+  appId: 'App ID',
+  origin: 'https://{UserPool_Domain}.authing.cn',
+  redirectUri: 'Login Callback URL',
 })
 
 authing.popUpLogin()
 
-// 登录成功回调
+// Login success callback
 authing.onPopUpLoginSuccess(async ({ access_token, id_token }) => {
-  // 可以存储 token
-  // 可以使用 token 获取用户的信息
+  // You can store tokens, and you can also use tokens to get user information
   const userInfo = await authing.getUserInfoByAccessToken(access_token)
 })
-// 登录失败回调
+// Login failure callback
 authing.onPopUpLoginFail(async ({ error, error_description }) => {
   console.log(error, error_description)
 })
-// 登录取消回调
+// Login cancel callback
 authing.onPopUpLoginCancel(async () => {
-  // 可根据业务逻辑进行处理
+  // Can be processed according to business logic
 })
 ```
 
-## 退出登录
+## Sign out
 
 ```js
 import { AuthingSSO, AuthenticationError } from '@authing/sso'
 
 const authing = new AuthingSSO({
-  appId: '应用 ID',
-  origin: 'https://{用户池域名}.authing.cn',
-  redirectUri: '你的业务软件路由地址',
+  appId: 'App ID',
+  origin: 'https://{UserPool_Domain}.authing.cn',
+  redirectUri: 'Login Callback URL',
 })
 
 await authing.logout()
-// 需要业务软件清除本地保存的所有 token 和用户信息
+// Requires business software to clear all locally saved tokens and user information
 ```
-## 高级使用
 
-每次发起登录本质是访问一个 URL 地址，可以携带许多参数。AuthingSSO SDK 默认会使用缺省参数。如果你需要精细控制登录请求参数，可以参考本示例。
+## Advanced usage
+
+The essence of each login is to access a URL address, which can carry many parameters. The AuthingSSO SDK uses default parameters by default. If you need fine-grained control over login request parameters, you can refer to this example.
 
 ```js
 import { AuthingSSO } from '@authing/sso'
 
 const authing = new AuthingSSO({
-  appId: '应用 ID',
-  origin: 'https://{用户池域名}.authing.cn',
-  redirectUri: '你的业务软件路由地址',
+  appId: 'App ID',
+  origin: 'https://{UserPool_Domain}.authing.cn',
+  redirectUri: 'Login Callback URL',
 })
 
-// 发起认证请求
+// initiate an authentication request
 authing.login({
   scope: 'openid profile email phone',
   responseMode: 'fragment',
@@ -226,7 +225,7 @@ authing.login({
   nonce: Math.random().toString(),
 })
 
-// 使用弹窗登录
+// use the popup to log in
 authing.popUpLogin({
   scope: 'openid email phone profile',
   responseMode: 'web_message',
@@ -236,11 +235,11 @@ authing.popUpLogin({
 })
 ```
 
-更多参数请参考[文档](https://docs.authing.cn/v2/federation/oidc/authorization-code/?build-url=curl)。
+For more parameters, please refer to the [documentation](https://docs.authing.cn/v2/federation/oidc/authorization-code/?build-url=curl).
 
-### 检查登录态并获取 Token
+### Check login status and get Token
 
-如果你想检查用户的登录态，并获取用户的 Access Token、Id Token，可以按以下方式调用，如果用户没有在 Authing 登录，该方法会抛出错误：
+If you want to check the user's login status and get the user's Access Token and Id Token, you can call it as follows. If the user is not logged in at Authing, this method will throw an error:
 
 ```js
 import {
@@ -250,24 +249,24 @@ import {
 } from '@authing/sso'
 
 const authing = new AuthingSSO({
-  appId: '应用 ID',
-  origin: 'https://{用户池域名}.authing.cn',
-  redirectUri: '你的业务软件路由地址',
+  appId: 'App ID',
+  origin: 'https://{UserPool_Domain}.authing.cn',
+  redirectUri: 'Login Callback URL',
 })
 
 async function main() {
   try {
     const { id_token, access_token } = await authing.getAccessTokenSilently()
-    // 无需在前端验证 token，统一在资源服务器验证即可
-    // 后续可以存储 token
+    // No need to verify the token on the front end, just verify it on the resource server uniformly
+    // The token can be stored later
   } catch (err) {
     if (err instanceof AuthenticationError) {
-      // 用户未登录，引导用户去登录页
+      // The user is not logged in, guide the user to the login page
       authing.login()
     } else if (err instanceof InvalidParamsError) {
-      // 可以根据自己的业务进行逻辑处理
+      // You can perform logic processing according to your own business
     } else {
-      // 发生未知错误
+      // An unknown error occurred
       throw err
     }
   }
@@ -275,12 +274,12 @@ async function main() {
 main()
 ```
 
-### 获取用户信息
+### Get user information
 
-你需要使用 Access Token 获取用户的个人信息：
+You need to use the Access Token to get the user's personal information:
 
-1. 用户初次登录成功时可以在回调函数中拿到用户的 Access Token，然后使用 Access Token 获取用户信息；
-2. 如果用户已经登录，你可以先获取用户的 Access Token 然后使用 Access Token 获取用户信息。
+1. When the user logs in successfully for the first time, they can get the user's Access Token in the callback function, and then use the Access Token to obtain user information;
+2. If the user is already logged in, you can first obtain the user's Access Token and then use the Access Token to obtain user information.
 
 ```js
 import {
@@ -290,24 +289,24 @@ import {
 } from '@authing/sso'
 
 const authing = new AuthingSSO({
-  appId: '应用 ID',
-  origin: 'https://{用户池域名}.authing.cn',
-  redirectUri: '你的业务软件路由地址',
+  appId: 'App ID',
+  origin: 'https://{UserPool_Domain}.authing.cn',
+  redirectUri: 'Login Callback URL',
 })
 
 async function main() {
   try {
-    // 获取用户的 token
+    // Get the user's token
     const { id_token, access_token } = await authing.getAccessTokenSilently()
-    // 可以使用 token 获取用户的信息
+    // You can use the token to get the user's information
     const userInfo = await authing.getUserInfoByAccessToken(access_token)
   } catch (err) {
     if (err instanceof AuthenticationError) {
-      // 可以根据自己的业务进行逻辑处理
+      // do something
     } else if (err instanceof InvalidParamsError) {
-      // 可以根据自己的业务进行逻辑处理
+      // do something
     } else {
-      // 发生未知错误
+      // An unknown error occurred
       throw err
     }
   }
@@ -316,9 +315,9 @@ main()
 ```
 ### trackSession
 
-跨域携带 cookie 访问 /cas/session 端点，获取当前登录的用户信息
+Access the `/cas/session` endpoint with a cookie across domains to get the currently logged in user information
 
-示例：
+Example:
 
 ```js
 let res = await auth.trackSession()
@@ -338,7 +337,7 @@ let res = await auth.trackSession()
  *   }
  * }
  *
- * 如果 session 不存在，返回：
+ * If the session does not exist, return:
  *
  * {
  *   session: null
@@ -346,19 +345,21 @@ let res = await auth.trackSession()
  * */
 ```
 
-## 测试 Demo
+## Demo
 
-[Demo](https://github.com/Authing/authing-sso-demo) 提供 Authing SSO 使用示例。
+[Demo](https://github.com/Authing/authing-sso-demo) Provides an example of using Authing SSO.
 
-## 更新日志
+## Changelog
 
-[文档](https://github.com/Authing/AuthingSSO/releases)中记录了每个版本的详细更改。
-## 参与贡献
+Detailed changes for each release are documented in the [documentation](https://github.com/Authing/AuthingSSO/releases).
+
+## Contribution
 - Fork it
 - Create your feature branch (git checkout -b my-new-feature)
 - Commit your changes (git commit -am 'Add some feature')
 - Push to the branch (git push origin my-new-feature)
 - Create new Pull Request
-## 获取帮助
+
+## Get help
 
 Join us on forum: [#authing-chat](https://forum.authing.cn/)
