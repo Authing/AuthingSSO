@@ -11,6 +11,8 @@
 </div>
 <br/>
 
+**简体中文** | [English](./README.md)
+
 Authing SSO SDK 为开发者提供了简单易用的函数来实现 Web 端的单点登录效果，你可以通过调用 SDK 与 Authing 完成集成，为你的多个业务软件实现浏览器内的单点登录效果。
 ## 使用 NPM 安装
 
