@@ -11,6 +11,8 @@
 </div>
 <br/>
 
+**English** | [简体中文](./README.zh-CN.md)
+
 The Authing SSO SDK provides developers with simple and easy-to-use functions to achieve the SSO effect on the web side. You can integrate with Authing by calling the SDK to achieve the SSO effect in the browser for your multiple business software.
 ## Install with NPM
 
