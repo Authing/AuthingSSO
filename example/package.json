@@ -1,0 +1,24 @@
+{
+  "name": "authing-sso-demo",
+  "version": "1.0.0",
+  "description": "使用 Authing 实现 SSO。",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Authing/authing-sso-demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Authing/authing-sso-demo/issues"
+  },
+  "homepage": "https://github.com/Authing/authing-sso-demo#readme",
+  "devDependencies": {
+    "koa": "^2.13.4",
+    "koa-route": "^3.2.0",
+    "koa-static": "^5.0.0"
+  }
+}
