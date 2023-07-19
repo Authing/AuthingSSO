@@ -43,7 +43,9 @@ export class AuthzUrlBuilder {
       urls.searchParams.append('prompt', this._prompt)
     }
 
-    urls.searchParams.append('state', this._state)
+    if (this._state) {
+      urls.searchParams.append('state', this._state)
+    }
 
     if (this._nonce) {
       urls.searchParams.append('nonce', this._nonce)

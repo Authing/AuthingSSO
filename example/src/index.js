@@ -17,4 +17,8 @@ app.use(route.get('/logout/callback', ctx => {
   ctx.response.redirect(`/index.html`)
 }))
 
-app.listen(3001)
+// app.use(route.get('/build/umd/index.min.js', ctx => {
+//   ctx.response.redirect(`${path.join(__dirname + '../../')}/example/views/index.min.js`)
+// }))
+
+app.listen(3004)

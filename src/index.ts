@@ -95,23 +95,20 @@ export class AuthingSSO {
    * @msg: 登录方法
    * @param {*}
    */
-  login(
-    {
+  login(options: ILoginParams) {
+    const {
       scope,
       responseMode,
       responseType,
-      state,
-      nonce,
       prompt,
-    }: ILoginParams = {
-        scope: 'openid profile email phone',
-        responseMode: 'fragment',
-        responseType: 'id_token token',
-        state: Math.random().toString(),
-        nonce: Math.random().toString(),
-        prompt: undefined,
-      }
-  ) {
+      state,
+      nonce
+    } = Object.assign({}, {
+      scope: 'openid profile email phone',
+      responseMode: 'fragment',
+      responseType: 'id_token token'
+    }, options)
+  
     let url = this.authzUrlBuilder
       .redirectUri(this.redirectUri)
       .scope(scope)
