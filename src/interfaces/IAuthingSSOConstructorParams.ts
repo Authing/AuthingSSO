@@ -62,7 +62,7 @@ export interface IPopUpLoginParams {
   responseType?: string;
   nonce?: string;
   state?: string;
-  prompt: IPromptType
+  prompt?: IPromptType
 }
 
 export interface IGetAccessTokenSilentlyParams extends IPopUpLoginParams{}
