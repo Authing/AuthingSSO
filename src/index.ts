@@ -357,6 +357,7 @@ export class AuthingSSO {
   async trackSession() {
     let res = await this._axios.get(TRACKSESSION, {
       withCredentials: true,
+      headers: { 'x-authing-app-id': this.appId },
     })
     return res.data
   }
