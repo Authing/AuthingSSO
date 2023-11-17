@@ -51,7 +51,6 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "@authing/sso": "^2.1.24",
     "@babel/runtime": "^7.16.3",
     "add": "^2.0.6",
     "axios": "^0.24.0",
