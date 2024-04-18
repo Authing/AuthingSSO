@@ -52,7 +52,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.16.3",
-    "add": "^2.0.6",
     "axios": "^0.24.0",
     "core-js": "3",
     "url-polyfill": "^1.1.12",

@@ -82,8 +82,39 @@ export class AuthingSSO {
    * @msg: 注册方法
    * @param {*}
    */
-  register() {
-    let url = new URL(this.origin + '/register')
+  register(options: ILoginParams) {
+    // let url = new URL(this.origin + '/register')
+    const registerContext = {
+      goto:"/register"
+    }
+
+
+
+    const {
+      scope,
+      responseMode,
+      responseType,
+      prompt,
+      state,
+      nonce
+    } = Object.assign({}, {
+      scope: 'openid profile email phone',
+      responseMode: 'fragment',
+      responseType: 'id_token token'
+    }, options)
+
+    let url = this.authzUrlBuilder
+      .redirectUri(this.redirectUri)
+      .scope(scope)
+      .responseMode(responseMode)
+      .responseType(responseType)
+      .clientId(this.appId)
+      .prompt(prompt)
+      .state(state)
+      .nonce(nonce)
+      .loginPageContext(JSON.stringify(registerContext))
+      .build()
+
     if (isInElectron) {
       window.open(url.href)
     } else {
@@ -108,7 +139,7 @@ export class AuthingSSO {
       responseMode: 'fragment',
       responseType: 'id_token token'
     }, options)
-  
+
     let url = this.authzUrlBuilder
       .redirectUri(this.redirectUri)
       .scope(scope)

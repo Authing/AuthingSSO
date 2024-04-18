@@ -40,10 +40,23 @@ describe('Test AuthingSSO', () => {
   test('Init AuthingSSO', () => {
     expect(auth).toBeInstanceOf(AuthingSSO)
   })
-  
+
   // 非 Electron
-  test('register function to be called', () => {    
-    auth.register()
+  test('register function to be called', () => {
+    const stateStr = Math.random().toString()
+    const nonceStr = Math.random().toString()
+    const scopeStr = 'openid phone'
+    const responseModeStr = 'fragment'
+    const responseTypeStr = 'token id_token'
+    const promptStr = 'login'
+    auth.register({
+      scope: scopeStr,
+      responseMode: responseModeStr,
+      responseType: responseTypeStr,
+      state: stateStr,
+      nonce: nonceStr,
+      prompt: promptStr
+    })
     expect(window.open).not.toBeCalled()
   })
 
@@ -110,7 +123,7 @@ describe('Test AuthingSSO', () => {
       .state(stateStr)
       .nonce(nonceStr)
       .build()
-    
+
     const iframe = document.createElement('iframe')
     iframe.title = 'postMessage() Initiator'
     iframe.src = url.href
