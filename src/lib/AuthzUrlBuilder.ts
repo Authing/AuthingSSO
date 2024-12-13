@@ -32,7 +32,7 @@ export class AuthzUrlBuilder {
   build() {
     let urls = new URL(this._origin);
 
-    urls.pathname = "/oidc/auth";
+    urls.pathname = urls.pathname.replace(/\/$/, "") + "/oidc/auth";
 
     urls.searchParams.append("redirect_uri", this._redirectUri);
     urls.searchParams.append("scope", this._scope);
