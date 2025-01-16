@@ -1,6 +1,6 @@
-import 'url-polyfill'
-import { InvalidParamsError } from './errors/InvalidParamsError'
-import { AuthenticationError } from './errors/AuthenticationError'
+import "url-polyfill";
+import { InvalidParamsError } from "./errors/InvalidParamsError";
+import { AuthenticationError } from "./errors/AuthenticationError";
 import {
   IAuthingSSOConstructorParams,
   IGetAccessTokenSilentlyParams,
@@ -11,71 +11,71 @@ import {
   emptyObjParams,
   ILoginParams,
   DataParams,
-} from './interfaces/IAuthingSSOConstructorParams'
-import { AuthzUrlBuilder } from './lib/AuthzUrlBuilder'
-import { isInElectron, isIE } from './utils/index'
-import axios, { Axios } from 'axios'
-import { EXCHANGEUSERINFO, LOGOUT, TRACKSESSION } from './utils/api'
+} from "./interfaces/IAuthingSSOConstructorParams";
+import { AuthzUrlBuilder } from "./lib/AuthzUrlBuilder";
+import { isInElectron, isIE } from "./utils/index";
+import axios, { Axios } from "axios";
+import { EXCHANGEUSERINFO, LOGOUT, TRACKSESSION } from "./utils/api";
 
-export { PopUpLoginError } from './errors/PopUpLoginError'
-export { AuthenticationError } from './errors/AuthenticationError'
-export { InvalidParamsError } from './errors/InvalidParamsError'
+export { PopUpLoginError } from "./errors/PopUpLoginError";
+export { AuthenticationError } from "./errors/AuthenticationError";
+export { InvalidParamsError } from "./errors/InvalidParamsError";
 export class AuthingSSO {
-  private appId: string
-  private origin: string
-  private redirectUri: string
+  private appId: string;
+  private origin: string;
+  private redirectUri: string;
 
   private popUpLoginFailCallback: (
     options: PopUpLoginFailParams
   ) => Promise<void> = () => {
-    return Promise.resolve()
-  }
+    return Promise.resolve();
+  };
 
   private popUpLoginSuccessCallback: (
     options: PopUpLoginSuccessParams
   ) => Promise<void> = () => {
-    return Promise.resolve()
-  }
+    return Promise.resolve();
+  };
 
   private popUpLoginCancelCallback: () => Promise<void> = () => {
-    return Promise.resolve()
-  }
+    return Promise.resolve();
+  };
 
-  private _axios: Axios
-  private win: Window
-  private loginStatus: string
-  public authzUrlBuilder: AuthzUrlBuilder
+  private _axios: Axios;
+  private win: Window;
+  private loginStatus: string;
+  public authzUrlBuilder: AuthzUrlBuilder;
 
   constructor(options: IAuthingSSOConstructorParams) {
     if (!options.appId) {
-      throw new InvalidParamsError('请传入 appId 参数，请传入应用 ID')
+      throw new InvalidParamsError("请传入 appId 参数，请传入应用 ID");
     }
 
     if (!options.redirectUri) {
-      throw new InvalidParamsError('请传入 redirectUri 参数，值为业务回调地址')
+      throw new InvalidParamsError("请传入 redirectUri 参数，值为业务回调地址");
     }
 
     if (!options.origin) {
       throw new InvalidParamsError(
-        '请传入 origin 参数，值为用户池域名 URL，例：https://userpool1.authing.cn'
-      )
+        "请传入 origin 参数，值为用户池域名 URL，例：https://userpool1.authing.cn"
+      );
     }
 
-    this.appId = options.appId
-    this.origin = options.origin
-    this.redirectUri = options.redirectUri
+    this.appId = options.appId;
+    this.origin = options.origin;
+    this.redirectUri = options.redirectUri;
 
     this.authzUrlBuilder = new AuthzUrlBuilder(
       this.origin,
       this.appId,
       this.redirectUri
-    )
+    );
 
     this._axios = axios.create({
       baseURL: this.origin,
-    })
+    });
 
-    this.loginStatus = '0' //0 未登录 1 成功 2 失败 3 取消 4 登录中
+    this.loginStatus = "0"; //0 未登录 1 成功 2 失败 3 取消 4 登录中
   }
 
   /**
@@ -85,23 +85,20 @@ export class AuthingSSO {
   register(options: ILoginParams) {
     // let url = new URL(this.origin + '/register')
     const registerContext = {
-      goto:"/register"
-    }
+      goto: "/register",
+    };
 
-
-
-    const {
-      scope,
-      responseMode,
-      responseType,
-      prompt,
-      state,
-      nonce
-    } = Object.assign({}, {
-      scope: 'openid profile email phone',
-      responseMode: 'fragment',
-      responseType: 'id_token token'
-    }, options)
+    const { scope, responseMode, responseType, prompt, state, nonce } =
+      Object.assign(
+        {},
+        {
+          scope: "openid profile email phone",
+          responseMode: "fragment",
+          responseType: "id_token token",
+          nonce: Math.random().toString(),
+        },
+        options
+      );
 
     let url = this.authzUrlBuilder
       .redirectUri(this.redirectUri)
@@ -113,12 +110,12 @@ export class AuthingSSO {
       .state(state)
       .nonce(nonce)
       .loginPageContext(JSON.stringify(registerContext))
-      .build()
+      .build();
 
     if (isInElectron) {
-      window.open(url.href)
+      window.open(url.href);
     } else {
-      window.location.href = url.href
+      window.location.href = url.href;
     }
   }
 
@@ -127,18 +124,17 @@ export class AuthingSSO {
    * @param {*}
    */
   login(options: ILoginParams) {
-    const {
-      scope,
-      responseMode,
-      responseType,
-      prompt,
-      state,
-      nonce
-    } = Object.assign({}, {
-      scope: 'openid profile email phone',
-      responseMode: 'fragment',
-      responseType: 'id_token token'
-    }, options)
+    const { scope, responseMode, responseType, prompt, state, nonce } =
+      Object.assign(
+        {},
+        {
+          scope: "openid profile email phone",
+          responseMode: "fragment",
+          responseType: "id_token token",
+          nonce: Math.random().toString(),
+        },
+        options
+      );
 
     let url = this.authzUrlBuilder
       .redirectUri(this.redirectUri)
@@ -149,12 +145,12 @@ export class AuthingSSO {
       .prompt(prompt)
       .state(state)
       .nonce(nonce)
-      .build()
+      .build();
 
     if (isInElectron) {
-      window.open(url.href)
+      window.open(url.href);
     } else {
-      window.location.href = url.href
+      window.location.href = url.href;
     }
   }
 
@@ -171,33 +167,33 @@ export class AuthingSSO {
       nonce,
       prompt,
     }: IPopUpLoginParams = {
-        scope: 'openid profile email phone',
-        responseMode: 'web_message',
-        responseType: 'id_token token',
-        state: Math.random().toString(),
-        nonce: Math.random().toString(),
-        prompt: undefined,
-      }
+      scope: "openid profile email phone",
+      responseMode: "web_message",
+      responseType: "id_token token",
+      state: Math.random().toString(),
+      nonce: Math.random().toString(),
+      prompt: undefined,
+    }
   ) {
-    const _this = this
-    _this.loginStatus = '4'
+    const _this = this;
+    _this.loginStatus = "4";
     const msgEventListener: any = window.addEventListener(
-      'message',
+      "message",
       function (msgEvent) {
         if (msgEvent.data?.response?.error) {
-          const { error, error_description } = msgEvent.data.response
-          window.removeEventListener('message', msgEventListener)
-          _this.loginStatus = '2'
-          _this.popUpLoginFailCallback({ error, error_description })
+          const { error, error_description } = msgEvent.data.response;
+          window.removeEventListener("message", msgEventListener);
+          _this.loginStatus = "2";
+          _this.popUpLoginFailCallback({ error, error_description });
         }
         if (msgEvent.data?.response) {
-          const { access_token, id_token } = msgEvent.data.response
-          _this.popUpLoginSuccessCallback({ access_token, id_token })
-          window.removeEventListener('message', msgEventListener)
-          _this.loginStatus = '1'
+          const { access_token, id_token } = msgEvent.data.response;
+          _this.popUpLoginSuccessCallback({ access_token, id_token });
+          window.removeEventListener("message", msgEventListener);
+          _this.loginStatus = "1";
         }
       }
-    )
+    );
 
     let url = this.authzUrlBuilder
       .redirectUri(this.redirectUri)
@@ -208,24 +204,24 @@ export class AuthingSSO {
       .state(state)
       .prompt(prompt)
       .nonce(nonce)
-      .build()
-    let leftVal = (screen.width - 500) / 2
-    let topVal = (screen.height - 700) / 2
+      .build();
+    let leftVal = (screen.width - 500) / 2;
+    let topVal = (screen.height - 700) / 2;
     this.win = window.open(
       url.href,
-      '_blank',
+      "_blank",
       `width=500,height=700,left=${leftVal},top=${topVal}`
-    )
+    );
     var loop = setInterval(function () {
       if (_this.win && _this.win.closed) {
-        if (_this.loginStatus === '4') {
-          _this.popUpLoginCancelCallback()
+        if (_this.loginStatus === "4") {
+          _this.popUpLoginCancelCallback();
         }
-        clearInterval(loop)
-        _this.loginStatus = '3'
-        window.removeEventListener('message', msgEventListener)
+        clearInterval(loop);
+        _this.loginStatus = "3";
+        window.removeEventListener("message", msgEventListener);
       }
-    }, 1000)
+    }, 1000);
   }
 
   /**
@@ -236,7 +232,7 @@ export class AuthingSSO {
   async onPopUpLoginSuccess(
     cb: (options: PopUpLoginSuccessParams) => Promise<void>
   ): Promise<void> {
-    this.popUpLoginSuccessCallback = cb
+    this.popUpLoginSuccessCallback = cb;
   }
 
   /**
@@ -247,14 +243,14 @@ export class AuthingSSO {
   async onPopUpLoginFail(
     cb: (options: PopUpLoginFailParams) => Promise<void>
   ): Promise<void> {
-    this.popUpLoginFailCallback = cb
+    this.popUpLoginFailCallback = cb;
   }
 
   /**
    * @msg: 弹窗登录取消方法
    */
   async onPopUpLoginCancel(cb: () => Promise<void>): Promise<void> {
-    this.popUpLoginCancelCallback = cb
+    this.popUpLoginCancelCallback = cb;
   }
 
   /**
@@ -262,21 +258,21 @@ export class AuthingSSO {
    * @param  access_token: string
    */
   async getUserInfoByAccessToken(access_token: string) {
-    if (!access_token || typeof access_token !== 'string') {
-      throw new InvalidParamsError('请传入正确的 access_token')
+    if (!access_token || typeof access_token !== "string") {
+      throw new InvalidParamsError("请传入正确的 access_token");
     }
 
     let res: GetTokenParams = await this._axios.get(EXCHANGEUSERINFO, {
       params: { access_token: access_token },
-    })
+    });
 
     if (res && res.status === 200) {
       if (res.data.error && res.data.error_description) {
-        throw new AuthenticationError(res.data.error_description)
+        throw new AuthenticationError(res.data.error_description);
       }
-      return res.data
+      return res.data;
     } else {
-      throw new AuthenticationError(res.data.error_description)
+      throw new AuthenticationError(res.data.error_description);
     }
   }
 
@@ -293,13 +289,13 @@ export class AuthingSSO {
       nonce,
       prompt,
     }: IGetAccessTokenSilentlyParams = {
-        scope: 'openid profile email phone',
-        responseMode: 'web_message',
-        responseType: 'id_token token',
-        state: Math.random().toString(),
-        nonce: Math.random().toString(),
-        prompt: 'none',
-      }
+      scope: "openid profile email phone",
+      responseMode: "web_message",
+      responseType: "id_token token",
+      state: Math.random().toString(),
+      nonce: Math.random().toString(),
+      prompt: "none",
+    }
   ) {
     let url = this.authzUrlBuilder
       .redirectUri(this.redirectUri)
@@ -310,39 +306,39 @@ export class AuthingSSO {
       .prompt(prompt)
       .state(state)
       .nonce(nonce)
-      .build()
+      .build();
 
-    const iframe = document.createElement('iframe')
-    iframe.title = 'postMessage() Initiator'
-    iframe.src = url.href
-    iframe.hidden = true
+    const iframe = document.createElement("iframe");
+    iframe.title = "postMessage() Initiator";
+    iframe.src = url.href;
+    iframe.hidden = true;
     if (isIE()) {
-      document.body.appendChild(iframe)
+      document.body.appendChild(iframe);
     } else {
-      document.body.append(iframe)
+      document.body.append(iframe);
     }
 
     return new Promise((resolve, reject) => {
       const msgEventListener: any = window.addEventListener(
-        'message',
+        "message",
         (msgEvent) => {
           if (msgEvent.data?.response?.error) {
-            window.removeEventListener('message', msgEventListener)
-            iframe.remove()
+            window.removeEventListener("message", msgEventListener);
+            iframe.remove();
             reject(
               new AuthenticationError(msgEvent.data.response.error_description)
-            )
-            return
+            );
+            return;
           }
           if (msgEvent.data?.response) {
-            const { access_token, id_token } = msgEvent.data.response
-            window.removeEventListener('message', msgEventListener)
-            iframe.remove()
-            resolve({ access_token, id_token })
+            const { access_token, id_token } = msgEvent.data.response;
+            window.removeEventListener("message", msgEventListener);
+            iframe.remove();
+            resolve({ access_token, id_token });
           }
         }
-      )
-    })
+      );
+    });
   }
 
   /**
@@ -352,11 +348,11 @@ export class AuthingSSO {
   async logout() {
     let res: DataParams = await this._axios.get(LOGOUT, {
       withCredentials: true,
-    })
+    });
     if (res && res.data && res.data.code === 200) {
-      return res.data
+      return res.data;
     } else {
-      throw new AuthenticationError(res.data.message)
+      throw new AuthenticationError(res.data.message);
     }
   }
 
@@ -367,18 +363,18 @@ export class AuthingSSO {
   getTokenSetFromUrlHash() {
     try {
       if (location.hash) {
-        let arr = location.hash.substring(1).split('&')
-        let result: emptyObjParams = {}
+        let arr = location.hash.substring(1).split("&");
+        let result: emptyObjParams = {};
         arr.forEach((item) => {
-          let [key, val] = item.split('=')
-          result[key] = val
-        })
-        return result
+          let [key, val] = item.split("=");
+          result[key] = val;
+        });
+        return result;
       } else {
-        return null
+        return null;
       }
     } catch {
-      throw new AuthenticationError('获取 hash 失败')
+      throw new AuthenticationError("获取 hash 失败");
     }
   }
 
@@ -388,8 +384,8 @@ export class AuthingSSO {
   async trackSession() {
     let res = await this._axios.get(TRACKSESSION, {
       withCredentials: true,
-      headers: { 'x-authing-app-id': this.appId },
-    })
-    return res.data
+      headers: { "x-authing-app-id": this.appId },
+    });
+    return res.data;
   }
 }
