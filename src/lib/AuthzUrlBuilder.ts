@@ -9,6 +9,7 @@ export class AuthzUrlBuilder {
   private _prompt: string | undefined;
   private _state: string = Math.random().toString();
   private _nonce: string;
+  private _loginHint: string;
   private _scope: string = "openid email phone profile offline_access";
   private _loginPageContext: string;
 
@@ -53,6 +54,9 @@ export class AuthzUrlBuilder {
       urls.searchParams.append("nonce", this._nonce);
     }
 
+    if (this._loginHint) {
+      urls.searchParams.append("login_hint", this._loginHint);
+    }
     return urls;
   }
 
@@ -109,6 +113,10 @@ export class AuthzUrlBuilder {
 
   nonce(rand: string) {
     this._nonce = rand;
+    return this;
+  }
+  loginHint(loginHint: string) {
+    this._loginHint = loginHint;
     return this;
   }
   loginPageContext(context: string) {
