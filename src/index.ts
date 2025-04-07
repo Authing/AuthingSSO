@@ -95,10 +95,7 @@ export class AuthingSSO {
           scope: "openid profile email phone",
           responseMode: "fragment",
           responseType: "id_token token",
-<<<<<<< Updated upstream
           nonce: Math.random().toString(),
-=======
->>>>>>> Stashed changes
         },
         options
       );
@@ -127,19 +124,6 @@ export class AuthingSSO {
    * @param {*}
    */
   login(options: ILoginParams) {
-<<<<<<< Updated upstream
-    const { scope, responseMode, responseType, prompt, state, nonce } =
-      Object.assign(
-        {},
-        {
-          scope: "openid profile email phone",
-          responseMode: "fragment",
-          responseType: "id_token token",
-          nonce: Math.random().toString(),
-        },
-        options
-      );
-=======
     const {
       scope,
       responseMode,
@@ -157,7 +141,6 @@ export class AuthingSSO {
       },
       options
     );
->>>>>>> Stashed changes
 
     let url = this.authzUrlBuilder
       .redirectUri(this.redirectUri)
@@ -168,10 +151,7 @@ export class AuthingSSO {
       .prompt(prompt)
       .state(state)
       .nonce(nonce)
-<<<<<<< Updated upstream
-=======
       .loginHint(login_hint)
->>>>>>> Stashed changes
       .build();
 
     if (isInElectron) {
