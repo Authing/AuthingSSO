@@ -65,6 +65,13 @@ export interface IPopUpLoginParams {
   state?: string;
   prompt?: IPromptType;
   login_hint?: string;
+  iframeParams?: {
+    width?: number;
+    height?: number;
+    top?: number;
+    left?: number;
+    styles?: string;
+  };
 }
 
 export interface IGetAccessTokenSilentlyParams extends IPopUpLoginParams {}

@@ -173,6 +173,10 @@ export class AuthingSSO {
       state,
       nonce,
       prompt,
+      iframeParams = {
+        width: 500,
+        height: 700,
+      },
     }: IPopUpLoginParams = {
       scope: "openid profile email phone",
       responseMode: "web_message",
@@ -180,6 +184,10 @@ export class AuthingSSO {
       state: Math.random().toString(),
       nonce: Math.random().toString(),
       prompt: undefined,
+      iframeParams: {
+        width: 500,
+        height: 700,
+      },
     }
   ) {
     const _this = this;
@@ -212,12 +220,16 @@ export class AuthingSSO {
       .prompt(prompt)
       .nonce(nonce)
       .build();
-    let leftVal = (screen.width - 500) / 2;
-    let topVal = (screen.height - 700) / 2;
+
+    const { width, height, top, left, styles } = iframeParams;
+
+    let leftVal = left ?? (screen.width - width) / 2;
+    let topVal = top ?? (screen.height - height) / 2;
+
     this.win = window.open(
       url.href,
       "_blank",
-      `width=500,height=700,left=${leftVal},top=${topVal}`
+      `width=${width},height=${height},left=${leftVal},top=${topVal},${styles}`
     );
     var loop = setInterval(function () {
       if (_this.win && _this.win.closed) {
