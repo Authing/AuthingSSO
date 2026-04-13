@@ -1,17 +1,19 @@
 import { AuthingSSO } from './index'
 
 const auth = new AuthingSSO({
-  appId: 'AUTHING_APP_ID',
+  appId: '60dd57882376f4bb789dbfe1',
 
   // SSO 应用面板地址
-  origin: 'https://{SSO 应用面板地址}.authing.cn',
+  origin: 'https://hep-center.u2.hep.com.cn',
 
   // 应用登录回调 URL
-  redirectUri: 'http://localhost:3001/login/callback'
+  redirectUri: 'http://localhost:3004/'
 })
 
 window.onload = async function () {
   let res = await auth.trackSession()
+  let etextbookproRes = await auth.getEtextbookproAccessTokenSilently()
+  console.log(etextbookproRes,'etextbookproRes')
   if (res.session !== null) {
     document.getElementById('h1-user-info').style.display = 'block'
     document.getElementById('user-info').innerHTML = JSON.stringify(res.userInfo, null, 4)
@@ -25,8 +27,7 @@ window.onload = async function () {
 document.getElementById('btn-login').addEventListener('click', function () {
   auth.login({
     scope: 'openid profile email phone',
-    responseMode: 'fragment',
-    responseType: 'code token',
+    responseType: 'code',
     state: Math.random().toString(),
     nonce: Math.random().toString()
   })

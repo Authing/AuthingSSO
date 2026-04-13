@@ -407,4 +407,53 @@ export class AuthingSSO {
     });
     return res.data;
   }
+
+
+  async loginEtextbookpro() {
+    const ext_idp_conn_id = '69c4acdc5e538db374a7021e';
+    this.authzUrlBuilder.reset();
+    let url = this.authzUrlBuilder
+          .redirectUri(this.redirectUri)
+          .scope("openid profile email phone")
+          .responseType('code')
+          .clientId(this.appId)
+          .state(Math.random().toString())
+          .nonce(Math.random().toString())
+          .extIdpConnId(ext_idp_conn_id)
+          .build();
+
+          console.log(url,'url.hrefhrefhrefhref')
+    
+      if (isInElectron) {
+        window.open(url.href);
+      } else {
+        window.location.href = url.href;
+      }
+  }
+
+
+  async getEtextbookproAccessTokenSilently() {
+    const referrer = document.referrer;
+    // const referrer = 'https://lifelong.smartedu.cn/home';
+    if(referrer.includes('lifelong')) {   
+
+      try {
+        const tokenResult = await this.getAccessTokenSilently();
+        const { id_token, access_token } = tokenResult as {
+          id_token: string;
+          access_token: string;
+        };
+      
+        if(access_token) {
+          return { id_token, access_token };
+        } else {
+          this.loginEtextbookpro();
+        }
+      } catch (silentLoginError) {
+        this.loginEtextbookpro();
+      }
+    } else {
+      return null;
+    }
+  }
 }

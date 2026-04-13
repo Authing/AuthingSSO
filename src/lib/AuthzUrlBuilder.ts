@@ -12,6 +12,7 @@ export class AuthzUrlBuilder {
   private _loginHint: string;
   private _scope: string = "openid email phone profile offline_access";
   private _loginPageContext: string;
+  private _extIdpConnId: string;
 
   constructor(origin: string, appid: string, redirectUri: string) {
     if (!origin) {
@@ -56,6 +57,10 @@ export class AuthzUrlBuilder {
 
     if (this._loginHint) {
       urls.searchParams.append("login_hint", this._loginHint);
+    }
+
+    if (this._extIdpConnId) {
+      urls.searchParams.append("ext_idp_conn_id", this._extIdpConnId);
     }
     return urls;
   }
@@ -123,4 +128,21 @@ export class AuthzUrlBuilder {
     this._loginPageContext = context;
     return this;
   }
+
+  extIdpConnId(extIdpConnId: string) {
+    this._extIdpConnId = extIdpConnId;
+    return this;
+  }
+  reset() {                                     
+     this._responseType = "code";                
+     this._responseMode = "fragment";            
+     this._prompt = undefined;                   
+     this._state = Math.random().toString();     
+     this._nonce = undefined;                    
+     this._loginHint = undefined;                
+     this._scope = "openid email phone profile offline_access";                                  
+     this._loginPageContext = undefined;         
+     this._extIdpConnId = undefined;             
+     return this;                                
+   }  
 }
