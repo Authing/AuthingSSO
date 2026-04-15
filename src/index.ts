@@ -429,8 +429,8 @@ export class AuthingSSO {
 
   /**
    * @description iframe 静默登录（适用于高教社场景）
-   * @returns Promise<{ code?: string; error?: string; state?: string }>
-   *   - 成功：返回 { code, state }
+   * @returns Promise<{ access_token?: id_token?: string string; error?: string; }>
+   *   - 成功：返回 { access_token, id_token }
    *   - 失败：返回 { error: 'login_required' | 'timeout' | 'invalid_state' }
    */
   async loginIdentitySource(
@@ -491,8 +491,6 @@ export class AuthingSSO {
       const messageHandler = (msgEvent: MessageEvent) => {
         // 安全校验：验证消息来源
         if (msgEvent.origin !== this.origin) return;
-
-        console.log(msgEvent.data, "msgEvent.datamsgEvent.data dft");
         if (msgEvent.data?.response?.error) {
           cleanup();
           reject({ error: "login_required" });
@@ -513,13 +511,13 @@ export class AuthingSSO {
       timeoutId = setTimeout(() => {
         cleanup();
         reject({ error: "timeout" });
-      }, 5000); // 10秒超时
+      }, 5000); // 5 秒超时
 
       window.addEventListener("message", messageHandler);
     });
   }
 
-  async onIdentitySourceLogin() {
+  async onIdentitySourceLifelongLogin() {
     const referrer = "https://lifelong.smartedu.cn/home";
     const ext_idp_conn_id = "69c4acdc5e538db374a7021e";
     let isPrompt = false
@@ -529,7 +527,6 @@ export class AuthingSSO {
 
       try {
         const tokenResult = await this.loginIdentitySource({ext_idp_conn_id,isPrompt});
-        console.log("尝试静默登录", tokenResult);
 
         const { id_token, access_token } = tokenResult as {
           id_token: string;

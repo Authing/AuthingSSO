@@ -12,7 +12,7 @@ const auth = new AuthingSSO({
 
 window.onload = async function () {
   let res = await auth.trackSession()
-  await auth.onIdentitySourceLogin()
+  await auth.onIdentitySourceLifelongLogin()
   // console.log(etextbookproRes,'etextbookproRes')
   if (res.session !== null) {
     document.getElementById('h1-user-info').style.display = 'block'
