@@ -408,50 +408,142 @@ export class AuthingSSO {
     return res.data;
   }
 
+  async loginEtextbookpro(ext_idp_conn_id : string) {
 
-  async loginEtextbookpro() {
-    const ext_idp_conn_id = '69c4acdc5e538db374a7021e';
     this.authzUrlBuilder.reset();
     let url = this.authzUrlBuilder
-          .redirectUri(this.redirectUri)
-          .scope("openid profile email phone")
-          .responseType('code')
-          .clientId(this.appId)
-          .state(Math.random().toString())
-          .nonce(Math.random().toString())
-          .extIdpConnId(ext_idp_conn_id)
-          .build();
-
-          console.log(url,'url.hrefhrefhrefhref')
-    
-      if (isInElectron) {
-        window.open(url.href);
-      } else {
-        window.location.href = url.href;
-      }
+      .redirectUri(this.redirectUri)
+      .scope("openid profile email phone")
+      .responseType("code")
+      .clientId(this.appId)
+      .state(Math.random().toString())
+      .nonce(Math.random().toString())
+      .extIdpConnId(ext_idp_conn_id)
+      .build();
+    if (isInElectron) {
+      window.open(url.href);
+    } else {
+      window.location.href = url.href;
+    }
   }
 
+  /**
+   * @description iframe 静默登录（适用于高教社场景）
+   * @returns Promise<{ code?: string; error?: string; state?: string }>
+   *   - 成功：返回 { code, state }
+   *   - 失败：返回 { error: 'login_required' | 'timeout' | 'invalid_state' }
+   */
+  async loginIdentitySource(
+    params: IGetAccessTokenSilentlyParams & {
+      ext_idp_conn_id?: string;
+      isPrompt?: boolean;
+    } = {},
+  ): Promise<{ access_token?: string; id_token?: string; error?: string }> {
+    const {
+      scope = "openid profile email phone",
+      responseMode = "web_message",
+      responseType = "id_token token",
+      state = Math.random().toString(),
+      nonce = Math.random().toString(),
+      ext_idp_conn_id,
+      isPrompt,
+    } = params;
 
-  async getEtextbookproAccessTokenSilently() {
-    const referrer = document.referrer;
-    // const referrer = 'https://lifelong.smartedu.cn/home';
-    if(referrer.includes('lifelong')) {   
+    this.authzUrlBuilder.reset();
+    let builder = this.authzUrlBuilder
+      .redirectUri(this.redirectUri)
+      .scope(scope)
+      .responseMode(responseMode)
+      .responseType(responseType)
+      .clientId(this.appId)
+      .state(state)
+      .nonce(nonce);
+
+    if (isPrompt) {
+      builder = builder.prompt('none');
+    }
+    if (ext_idp_conn_id) {
+      builder = builder.extIdpConnId(ext_idp_conn_id);
+    }
+
+    let url = builder.build();
+
+    const iframe = document.createElement("iframe");
+    iframe.title = "postMessage() Initiator";
+    iframe.src = url.href;
+    iframe.hidden = true;
+  
+    if (isIE()) {
+      document.body.appendChild(iframe);
+    } else {
+      document.body.append(iframe);
+    }
+
+    return new Promise((resolve, reject) => {
+      let timeoutId: ReturnType<typeof setTimeout>;
+
+      const cleanup = () => {
+        clearTimeout(timeoutId);
+        window.removeEventListener("message", messageHandler);
+        iframe.remove();
+      };
+
+      const messageHandler = (msgEvent: MessageEvent) => {
+        // 安全校验：验证消息来源
+        if (msgEvent.origin !== this.origin) return;
+
+        console.log(msgEvent.data, "msgEvent.datamsgEvent.data dft");
+        if (msgEvent.data?.response?.error) {
+          cleanup();
+          reject({ error: "login_required" });
+          return;
+        }
+        if (msgEvent.data?.response) {
+          const { access_token, id_token } = msgEvent.data.response;
+          cleanup();
+          resolve({ access_token, id_token });
+        } else {
+          cleanup();
+          reject({ error: "login_required" });
+          return;
+        }
+      };
+
+      // 设置超时
+      timeoutId = setTimeout(() => {
+        cleanup();
+        reject({ error: "timeout" });
+      }, 5000); // 10秒超时
+
+      window.addEventListener("message", messageHandler);
+    });
+  }
+
+  async onIdentitySourceLogin() {
+    const referrer = "https://lifelong.smartedu.cn/home";
+    const ext_idp_conn_id = "69c4acdc5e538db374a7021e";
+    let isPrompt = false
+
+    // const referrer = document.referrer;
+    if (referrer.includes("lifelong")) {
 
       try {
-        const tokenResult = await this.getAccessTokenSilently();
+        const tokenResult = await this.loginIdentitySource({ext_idp_conn_id,isPrompt});
+        console.log("尝试静默登录", tokenResult);
+
         const { id_token, access_token } = tokenResult as {
           id_token: string;
           access_token: string;
         };
-      
-        if(access_token) {
-          return { id_token, access_token };
-        } else {
-          this.loginEtextbookpro();
+        // iframe 静默登录失败（用户未登录），fallback 到跳转登录
+        if (!access_token || !id_token) {
+          this.loginEtextbookpro(ext_idp_conn_id);
         }
-      } catch (silentLoginError) {
-        this.loginEtextbookpro();
+      } catch (e) {
+        // iframe 登录异常，fallback 到跳转登录
+        this.loginEtextbookpro(ext_idp_conn_id);
       }
+  
     } else {
       return null;
     }
