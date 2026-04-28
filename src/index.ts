@@ -15,7 +15,7 @@ import {
 import { AuthzUrlBuilder } from "./lib/AuthzUrlBuilder";
 import { isInElectron, isIE } from "./utils/index";
 import axios, { Axios } from "axios";
-import { EXCHANGEUSERINFO, LOGOUT, TRACKSESSION } from "./utils/api";
+import { EXCHANGEUSERINFO, LOGOUT, TRACKSESSION, MATCH_CONN } from "./utils/api";
 
 export { PopUpLoginError } from "./errors/PopUpLoginError";
 export { AuthenticationError } from "./errors/AuthenticationError";
@@ -472,7 +472,7 @@ export class AuthingSSO {
     iframe.title = "postMessage() Initiator";
     iframe.src = url.href;
     iframe.hidden = true;
-  
+
     if (isIE()) {
       document.body.appendChild(iframe);
     } else {
@@ -517,32 +517,58 @@ export class AuthingSSO {
     });
   }
 
-  async onIdentitySourceLifelongLogin() {
-    const referrer = "https://lifelong.smartedu.cn/home";
-    const ext_idp_conn_id = "69c4acdc5e538db374a7021e";
-    let isPrompt = false
+  async onIdentitySourceVerifLogin(params?: {
+    ext_idp_conn_id?: string;
+    referrer?: string;
+  }) {
+    let ext_idp_conn_id = params?.ext_idp_conn_id || "";
 
-    // const referrer = document.referrer;
-    if (referrer.includes("lifelong")) {
+    const domain = params?.referrer || document.referrer || "https://lifelong.smartedu.cn/";
 
-      try {
-        const tokenResult = await this.loginIdentitySource({ext_idp_conn_id,isPrompt});
+    // 如果传入的 ext_idp_conn_id 存在，优先使用
+    if (!params?.ext_idp_conn_id) {
+      // 调用接口获取 ext_idp_conn_id
+      const matchConnRes: any = await this._axios.get(MATCH_CONN, {
+        params: {
+          app_id: this.appId,
+          domain: domain,
+        },
+        withCredentials: true,
+        headers: { "x-authing-app-id": this.appId },
+      });
 
-        const { id_token, access_token } = tokenResult as {
-          id_token: string;
-          access_token: string;
-        };
-        // iframe 静默登录失败（用户未登录），fallback 到跳转登录
-        if (!access_token || !id_token) {
-          this.loginEtextbookpro(ext_idp_conn_id);
-        }
-      } catch (e) {
-        // iframe 登录异常，fallback 到跳转登录
-        this.loginEtextbookpro(ext_idp_conn_id);
+      if (matchConnRes?.data?.code !== 200 || !matchConnRes?.data?.data?.connId) {
+        console.error("获取 ext_idp_conn_id 失败:", matchConnRes?.data);
+      } else {
+        ext_idp_conn_id = matchConnRes?.data?.data?.connId;
       }
-  
-    } else {
-      return null;
+    }
+
+    if(!ext_idp_conn_id){
+      return null
+    }
+
+
+    try {
+      let isPrompt = false;
+      const tokenResult = await this.loginIdentitySource({ext_idp_conn_id,isPrompt});
+
+      console.log(tokenResult,'tokenResulttokenResult ')
+
+      const { id_token, access_token } = tokenResult as {
+        id_token: string;
+        access_token: string;
+      };
+
+      // iframe 静默登录失败（用户未登录），fallback 到跳转登录
+      if (!access_token || !id_token) {
+        this.loginEtextbookpro(ext_idp_conn_id);
+      }else{
+        return tokenResult
+      }
+    } catch (e) {
+      // iframe 登录异常，fallback 到跳转登录
+      this.loginEtextbookpro(ext_idp_conn_id);
     }
   }
 }

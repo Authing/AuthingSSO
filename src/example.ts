@@ -6,13 +6,23 @@ const auth = new AuthingSSO({
   // SSO 应用面板地址
   origin: 'https://hep-center.u2.hep.com.cn',
 
+
+  // appId: '69e610c3acfa67f8d46109ce',
+
+  // // SSO 应用面板地址
+  // origin: 'https://test.authing.localhost',
+
+
   // 应用登录回调 URL
   redirectUri: 'http://localhost:3004/'
 })
 
 window.onload = async function () {
   let res = await auth.trackSession()
-  await auth.onIdentitySourceLifelongLogin()
+  // let etextbookproRes = await auth.onIdentitySourceVerifLogin({
+  //   ext_idp_conn_id: '69c4acdc5e538db374a7021e',
+  //   referrer: 'https://lifelong.smartedu.cn/'
+  // })
   // console.log(etextbookproRes,'etextbookproRes')
   if (res.session !== null) {
     document.getElementById('h1-user-info').style.display = 'block'
