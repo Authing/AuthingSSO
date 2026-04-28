@@ -122,3 +122,5 @@ build
 # add vscode
 .history
 .vscode/
+
+PUBLISH.MD
