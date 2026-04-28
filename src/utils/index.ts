@@ -14,4 +14,18 @@ const isIE = () => { //ie?
   return false
 }
 
-export { isInElectron, isInChrome, isIE }
+
+function getReferrerOrigin(): string {
+  try {
+    const referrer = document.referrer;
+    if (!referrer) return '';
+
+    const url = new URL(referrer);
+    return `${url.protocol}//${url.host}`;
+  } catch {
+    return '';
+  }
+}
+
+
+export { isInElectron, isInChrome, isIE, getReferrerOrigin }

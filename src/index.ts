@@ -13,7 +13,7 @@ import {
   DataParams,
 } from "./interfaces/IAuthingSSOConstructorParams";
 import { AuthzUrlBuilder } from "./lib/AuthzUrlBuilder";
-import { isInElectron, isIE } from "./utils/index";
+import { isInElectron, isIE, getReferrerOrigin } from "./utils/index";
 import axios, { Axios } from "axios";
 import { EXCHANGEUSERINFO, LOGOUT, TRACKSESSION, MATCH_CONN } from "./utils/api";
 
@@ -517,17 +517,20 @@ export class AuthingSSO {
     });
   }
 
+
+
   async onIdentitySourceVerifLogin(params?: {
     ext_idp_conn_id?: string;
     referrer?: string;
   }) {
     let ext_idp_conn_id = params?.ext_idp_conn_id || "";
 
-    const domain = params?.referrer || document.referrer || "https://lifelong.smartedu.cn/";
+    let referrerReferrer =  getReferrerOrigin()
 
     // 如果传入的 ext_idp_conn_id 存在，优先使用
     if (!params?.ext_idp_conn_id) {
       // 调用接口获取 ext_idp_conn_id
+      const domain = params?.referrer || referrerReferrer || "https://lifelong.smartedu.cn/";
       const matchConnRes: any = await this._axios.get(MATCH_CONN, {
         params: {
           app_id: this.appId,
@@ -549,11 +552,21 @@ export class AuthingSSO {
     }
 
 
+    // 如果传入的 ext_idp_conn_id 存在，优先使用
+
+    if (params?.referrer ) {
+      console.log(params?.referrer,referrerReferrer,'referrerparams debugger')
+      if(params?.referrer !== referrerReferrer){
+        return null
+      }
+    }
+
+
     try {
       let isPrompt = false;
       const tokenResult = await this.loginIdentitySource({ext_idp_conn_id,isPrompt});
 
-      console.log(tokenResult,'tokenResulttokenResult ')
+      console.log(tokenResult,'tokenResulttokenResult debugger')
 
       const { id_token, access_token } = tokenResult as {
         id_token: string;
