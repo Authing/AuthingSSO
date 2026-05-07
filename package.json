@@ -8,6 +8,7 @@
   "scripts": {
     "test": "jest",
     "dev": "webpack-dev-server --config webpack.dev.config.js",
+    "dev:https": "webpack-dev-server --config webpack.dev.config.js --server-type https",
     "build:umd": "webpack",
     "build:module": "tsc -p tsconfig.module.json",
     "build": "yarn clean && yarn build:umd && yarn build:module",

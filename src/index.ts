@@ -472,7 +472,7 @@ export class AuthingSSO {
     iframe.title = "postMessage() Initiator";
     iframe.src = url.href;
     iframe.hidden = true;
-
+    console.log( url.href,' url.href url.href debugger')
     if (isIE()) {
       document.body.appendChild(iframe);
     } else {
@@ -485,7 +485,7 @@ export class AuthingSSO {
       const cleanup = () => {
         clearTimeout(timeoutId);
         window.removeEventListener("message", messageHandler);
-        iframe.remove();
+        // iframe.remove();
       };
 
       const messageHandler = (msgEvent: MessageEvent) => {
@@ -557,7 +557,7 @@ export class AuthingSSO {
     if (params?.referrer ) {
       console.log(params?.referrer,referrerReferrer,'referrerparams debugger')
       if(params?.referrer !== referrerReferrer){
-        return null
+        // return null
       }
     }
 
@@ -581,7 +581,8 @@ export class AuthingSSO {
       }
     } catch (e) {
       // iframe 登录异常，fallback 到跳转登录
-      this.loginEtextbookpro(ext_idp_conn_id);
+      console.log(e,'eeeeeeee debugger')
+      // this.loginEtextbookpro(ext_idp_conn_id);
     }
   }
 }

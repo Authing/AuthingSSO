@@ -18,12 +18,14 @@ const auth = new AuthingSSO({
 })
 
 window.onload = async function () {
+
+  let etextbookproRes = await auth.onIdentitySourceVerifLogin({
+    ext_idp_conn_id: '69c4acdc5e538db374a7021e',
+    referrer: 'https://lifelong.smartedu.cn'
+  })
+
+  console.log(etextbookproRes,'etextbookproRes')
   let res = await auth.trackSession()
-  // let etextbookproRes = await auth.onIdentitySourceVerifLogin({
-  //   ext_idp_conn_id: '69c4acdc5e538db374a7021e',
-  //   referrer: 'https://lifelong.smartedu.cn'
-  // })
-  // console.log(etextbookproRes,'etextbookproRes')
   if (res.session !== null) {
     document.getElementById('h1-user-info').style.display = 'block'
     document.getElementById('user-info').innerHTML = JSON.stringify(res.userInfo, null, 4)

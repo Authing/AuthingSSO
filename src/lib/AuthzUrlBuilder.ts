@@ -41,7 +41,9 @@ export class AuthzUrlBuilder {
     urls.searchParams.append("response_mode", this._responseMode);
     urls.searchParams.append("response_type", this._responseType);
     urls.searchParams.append("client_id", this._clientId);
-    urls.searchParams.append("login_page_context", this._loginPageContext);
+    if (this._loginPageContext) {
+      urls.searchParams.append("login_page_context", this._loginPageContext);
+    }
 
     if (this._prompt) {
       urls.searchParams.append("prompt", this._prompt);

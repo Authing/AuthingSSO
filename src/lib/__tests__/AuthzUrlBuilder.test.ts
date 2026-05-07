@@ -63,4 +63,17 @@ describe('Test AuthzUrlBuilder', () => {
     expect(urls.origin).toBe(global.__origin__)
     expect(urls.pathname).toBe('/oidc/auth')
   })
+
+  test('build function should skip empty login_page_context', () => {
+    const urls = authzUrlBuilder
+      .reset()
+      .redirectUri(global.__redirectUri__)
+      .scope('openid phone')
+      .responseMode('web_message')
+      .responseType('token id_token')
+      .clientId(global.__appId__)
+      .build()
+
+    expect(urls.searchParams.has('login_page_context')).toBe(false)
+  })
 })
