@@ -19,13 +19,11 @@ const auth = new AuthingSSO({
 
 window.onload = async function () {
 
-  let etextbookproRes = await auth.onIdentitySourceVerifLogin({
-    ext_idp_conn_id: '69c4acdc5e538db374a7021e',
-    referrer: 'https://lifelong.smartedu.cn'
-  })
+  // await auth.onIdentitySourceVerifLogin()
 
-  console.log(etextbookproRes,'etextbookproRes')
+
   let res = await auth.trackSession()
+    console.log(res,'resres')
   if (res.session !== null) {
     document.getElementById('h1-user-info').style.display = 'block'
     document.getElementById('user-info').innerHTML = JSON.stringify(res.userInfo, null, 4)

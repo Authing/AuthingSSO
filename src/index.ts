@@ -420,11 +420,13 @@ export class AuthingSSO {
       .nonce(Math.random().toString())
       .extIdpConnId(ext_idp_conn_id)
       .build();
-    if (isInElectron) {
-      window.open(url.href);
-    } else {
-      window.location.href = url.href;
-    }
+
+      console.log(url.href,'url.hrefurl.hrefurl.href deugger')
+    // if (isInElectron) {
+    //   window.open(url.href);
+    // } else {
+    //   window.location.href = url.href;
+    // }
   }
 
   /**
@@ -511,7 +513,7 @@ export class AuthingSSO {
       timeoutId = setTimeout(() => {
         cleanup();
         reject({ error: "timeout" });
-      }, 5000); // 5 秒超时
+      }, 2800); // 2.8 秒超时
 
       window.addEventListener("message", messageHandler);
     });
@@ -530,7 +532,8 @@ export class AuthingSSO {
     // 如果传入的 ext_idp_conn_id 存在，优先使用
     if (!params?.ext_idp_conn_id) {
       // 调用接口获取 ext_idp_conn_id
-      const domain = params?.referrer || referrerReferrer || "https://lifelong.smartedu.cn/";
+      const domain = referrerReferrer || "lifelong.smartedu.cn";
+      // const domain =  "lifelong.smartedu.cn";
       const matchConnRes: any = await this._axios.get(MATCH_CONN, {
         params: {
           app_id: this.appId,
@@ -553,11 +556,10 @@ export class AuthingSSO {
 
 
     // 如果传入的 ext_idp_conn_id 存在，优先使用
-
     if (params?.referrer ) {
       console.log(params?.referrer,referrerReferrer,'referrerparams debugger')
       if(params?.referrer !== referrerReferrer){
-        // return null
+        return null
       }
     }
 
@@ -582,7 +584,7 @@ export class AuthingSSO {
     } catch (e) {
       // iframe 登录异常，fallback 到跳转登录
       console.log(e,'eeeeeeee debugger')
-      // this.loginEtextbookpro(ext_idp_conn_id);
+      this.loginEtextbookpro(ext_idp_conn_id);
     }
   }
 }

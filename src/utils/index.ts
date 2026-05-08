@@ -21,7 +21,7 @@ function getReferrerOrigin(): string {
     if (!referrer) return '';
 
     const url = new URL(referrer);
-    return `${url.protocol}//${url.host}`;
+    return `${url.host}`;
   } catch {
     return '';
   }
